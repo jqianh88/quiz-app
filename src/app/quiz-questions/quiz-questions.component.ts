@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-quiz-questions',
   standalone: true,
-  imports: [WelcomeComponent, CommonModule],
+  imports: [WelcomeComponent, CommonModule, ChangeBgDirective],
   templateUrl: './quiz-questions.component.html',
   styleUrl: './quiz-questions.component.scss'
 })

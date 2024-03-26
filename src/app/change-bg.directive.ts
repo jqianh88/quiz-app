@@ -1,7 +1,8 @@
 import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[appChangeBg]'
+  selector: '[appChangeBg]',
+  standalone: true
 })
 export class ChangeBgDirective {
 
