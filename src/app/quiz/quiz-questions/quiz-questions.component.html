@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <div class="card">
+  <div *ngrxLet="questionList$ as questionList" class="card">
       <div class="d-flex justify-content-between p-3">
           <div class="image">
               <img src="https://img.icons8.com/color/96/000000/angularjs.png" width="90" alt="logo">
@@ -27,13 +27,13 @@
           </div>
           <div class="question">
               <div class="card">
-                  <h3>{{questionList[currentQuestion]?.questionText}}</h3>
+                  <h3>{{questionList[currentQuestion].questionText}}</h3>
               </div>
           </div>
           <div class="options">
               <ol *ngFor="let option of questionList[currentQuestion]?.options">
                   <li (click)="answer(currentQuestion+1,option)">
-                      <div appChangeBg [isCorrect]="option.correct" class="card">
+                      <div appChangeBg [isCorrect]="!!option.correct" class="card">
                           {{option.text}}
                       </div>
                   </li>
@@ -48,7 +48,7 @@
       </ng-container>
 
       <ng-container *ngIf="isQuizCompleted">
-        <app-quiz-results></app-quiz-results>
+        <app-quiz-results [questionList]="questionList ?? []"></app-quiz-results>
       </ng-container>
 
   </div>

@@ -1,9 +1,10 @@
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
 import { WelcomeComponent } from '../../welcome/welcome.component';
 import { ChangeBgDirective } from '../../change-bg.directive';
 import { CommonModule } from '@angular/common';
+import { QuizQuestion } from '../quiz-questions-service/quiz-questions.models';
 
 @Component({
   selector: 'app-quiz-results',
@@ -15,7 +16,10 @@ import { CommonModule } from '@angular/common';
 export class QuizResultsComponent implements OnInit {
 
   public name: string = "";
-  public questionList: any = [];
+  // public get questionList(): QuizQuestion[] {
+  //   return this.quizQuestionsService.getQuestionList()
+  // };
+  @Input() questionList: QuizQuestion[] = [];
   public currentQuestion: number = 0;
   public points: number = 0;
   counter = 60;
@@ -24,7 +28,7 @@ export class QuizResultsComponent implements OnInit {
   interval$: any;
   progress: string = "0";
   isQuizCompleted : boolean = false;
-  constructor(private quizQuestionsService: QuizQuestionsService) { }
+
 
   ngOnInit(): void {
 

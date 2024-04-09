@@ -1,22 +1,23 @@
 import { Component, NgModule, OnInit } from '@angular/core';
-import { interval } from 'rxjs';
+import { Observable, interval } from 'rxjs';
 import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
 import { WelcomeComponent } from '../../welcome/welcome.component';
 import { ChangeBgDirective } from '../../change-bg.directive';
 import { CommonModule } from '@angular/common';
 import { QuizResultsComponent } from '../quiz-results/quiz-results.component';
+import { QuizQuestion } from '../quiz-questions-service/quiz-questions.models';
+import { LetDirective } from '@ngrx/component';
 
 @Component({
   selector: 'app-quiz-questions',
   standalone: true,
-  imports: [WelcomeComponent, CommonModule, ChangeBgDirective, QuizResultsComponent],
+  imports: [WelcomeComponent, CommonModule, ChangeBgDirective, QuizResultsComponent, LetDirective],
   templateUrl: './quiz-questions.component.html',
   styleUrl: './quiz-questions.component.scss'
 })
 export class QuizQuestionsComponent implements OnInit {
 
   public name: string = "";
-  public questionList: any = [];
   public currentQuestion: number = 0;
   public points: number = 0;
   counter = 60;
@@ -25,7 +26,10 @@ export class QuizQuestionsComponent implements OnInit {
   interval$: any;
   progress: string = "0";
   isQuizCompleted : boolean = false;
-  constructor(private quizQuestionsService: QuizQuestionsService) { }
+  questionList$ : Observable<QuizQuestion[]>
+  constructor(private quizQuestionsService: QuizQuestionsService) {
+    this.questionList$ = this.quizQuestionsService.getQuestionList()
+   }
 
   ngOnInit(): void {
     this.name = localStorage.getItem("name")!;
@@ -33,10 +37,8 @@ export class QuizQuestionsComponent implements OnInit {
     this.startCounter();
   }
   getAllQuestions() {
-    this.quizQuestionsService.getQuestionJson()
-      .subscribe(res => {
-        this.questionList = res.questions;
-      })
+    return this.quizQuestionsService.getQuestionList()
+
   }
   nextQuestion() {
     this.currentQuestion++;
@@ -46,7 +48,7 @@ export class QuizQuestionsComponent implements OnInit {
   }
   answer(currentQno: number, option: any) {
 
-    if(currentQno === this.questionList.length){
+    if (this.quizQuestionsService.isLastQuestion(currentQno)){
       this.isQuizCompleted = true;
       this.stopCounter();
     }
@@ -104,8 +106,7 @@ export class QuizQuestionsComponent implements OnInit {
 
   }
   getProgressPercent() {
-    this.progress = ((this.currentQuestion / this.questionList.length) * 100).toString();
-    return this.progress;
+    return this.quizQuestionsService.getProgressPercent(this.currentQuestion);
 
   }
 }

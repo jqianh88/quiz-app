@@ -1,0 +1,35 @@
+import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http'
+import { ApiQuizResults, QuizQuestion } from './quiz-questions.models';
+import { QuizQuestionsApiService } from './quiz-questions-api.service';
+import { Observable, map, takeUntil } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+@Injectable({
+  providedIn: 'root'
+})
+export class QuizQuestionsService {
+  private questionList$: Observable<QuizQuestion[]> = this.questionApiService.getQuestionJson().pipe(takeUntilDestroyed(), map(res => res.questions));  // protects api service, return questions from the res object
+  constructor(private readonly questionApiService: QuizQuestionsApiService) { // Actually doing DI
+    // this.questionApiService.getQuestionJson()
+    // clean up memory leak - bind operator  to this component's lifecycle, more ideal than take(1)
+    // .pipe(takeUntilDestroyed())
+    // .subscribe(res => {
+    //   this.questionList = res.questions;
+    // })
+  }
+
+  public getQuestionList(){
+    return this.questionList$;
+  }
+
+  public isLastQuestion(currentQno: number){
+    return true;
+  }
+
+  public getProgressPercent(currentQno: number){
+    return (currentQno / 15 * 100);
+  }
+}
+// Instead of providing flat value "questionList" (line 11) --> much better way
+// push observable down to the component --> delegate down to the component
+// So

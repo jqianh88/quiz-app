@@ -6,13 +6,16 @@
                   "correct": true
               },
               {
-                  "text": ";"
+                  "text": ";",
+                  "correct": false
               },
               {
-                  "text": "!"
+                  "text": "!",
+                  "correct": false
               },
               {
-                  "text": "&"
+                  "text": "&",
+                  "correct": false
               }
           ],
           "explanation": "TS uses a colon (:) to separate the property name from the property type"
@@ -20,13 +23,16 @@
       {
           "questionText": "Which of the following is NOT a type used in TypeScript?",
           "options": [{
-                  "text": "number"
+                  "text": "number",
+                  "correct": false
               },
               {
-                  "text": "string"
+                  "text": "string",
+                  "correct": false
               },
               {
-                  "text": "boolean"
+                  "text": "boolean",
+                  "correct": false
               },
               {
                   "text": "enum",
@@ -38,17 +44,20 @@
       {
           "questionText": "How can we specify properties and methods for an object in TypeScript?",
           "options": [{
-                  "text": "Use classes."
+                  "text": "Use classes.",
+                  "correct": false
               },
               {
                   "text": "Use interfaces.",
                   "correct": true
               },
               {
-                  "text": "Use enums."
+                  "text": "Use enums.",
+                  "correct": false
               },
               {
-                  "text": "Use async/await."
+                  "text": "Use async/await.",
+                  "correct": false
               }
           ],
           "explanation": "interfaces are typically used to list the properties and methods for an object"
@@ -56,17 +65,20 @@
       {
           "questionText": "How else can Array<number> be written in TypeScript?",
           "options": [{
-                  "text": "@number"
+                  "text": "@number",
+                  "correct": false
               },
               {
                   "text": "number[]",
                   "correct": true
               },
               {
-                  "text": "number!"
+                  "text": "number!",
+                  "correct": false
               },
               {
-                  "text": "number?"
+                  "text": "number?",
+                  "correct": false
               }
           ],
           "explanation": "number[] is another way of writing Array<number> in TypeScript"
@@ -78,13 +90,16 @@
                   "correct": true
               },
               {
-                  "text": "destructor"
+                  "text": "destructor",
+                  "correct": false
               },
               {
-                  "text": "import"
+                  "text": "import",
+                  "correct": false
               },
               {
-                  "text": "subscribe"
+                  "text": "subscribe",
+                  "correct": false
               }
           ],
           "explanation": "a constructor is used by a class to take in parameters"
@@ -92,13 +107,16 @@
       {
           "questionText": "Which is NOT an access modifier?",
           "options": [{
-                  "text": "private"
+                  "text": "private",
+                  "correct": false
               },
               {
-                  "text": "protected"
+                  "text": "protected",
+                  "correct": false
               },
               {
-                  "text": "public"
+                  "text": "public",
+                  "correct": false
               },
               {
                   "text": "async",
@@ -110,17 +128,20 @@
       {
           "questionText": "Which keyword allows us to share information between files in TypeScript?",
           "options": [{
-                  "text": "import"
+                  "text": "import",
+                  "correct": false
               },
               {
                   "text": "export",
                   "correct": true
               },
               {
-                  "text": "async"
+                  "text": "async",
+                  "correct": false
               },
               {
-                  "text": "constructor"
+                  "text": "constructor",
+                  "correct": false
               }
           ],
           "explanation": "the export keyword allows for the information to be transmitted between files"
@@ -132,13 +153,16 @@
                   "correct": true
               },
               {
-                  "text": "map"
+                  "text": "map",
+                  "correct": false
               },
               {
-                  "text": "async"
+                  "text": "async",
+                  "correct": false
               },
               {
-                  "text": "enum"
+                  "text": "enum",
+                  "correct": false
               }
           ],
           "explanation": "filter is a method used to conditionally create a new array"
@@ -150,13 +174,16 @@
                   "correct": true
               },
               {
-                  "text": "Accessors"
+                  "text": "Accessors",
+                  "correct": false
               },
               {
-                  "text": "Destructuring"
+                  "text": "Destructuring",
+                  "correct": false
               },
               {
-                  "text": "Arrow function"
+                  "text": "Arrow function",
+                  "correct": false
               }
           ],
           "explanation": "this.propertyName is the way to access a specific property within a class"

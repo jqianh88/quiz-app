@@ -6,7 +6,7 @@ import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/
 })
 export class ChangeBgDirective {
 
-  @Input() isCorrect : Boolean = false;
+  @Input() isCorrect : boolean = false;
   constructor(private el : ElementRef, private render : Renderer2) { }
   @HostListener('click') answer(){
     if(this.isCorrect){
