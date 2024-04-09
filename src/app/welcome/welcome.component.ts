@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { QuizQuestionsComponent } from '../quiz-questions/quiz-questions.component';
+import { QuizQuestionsComponent } from '../quiz/quiz-questions/quiz-questions.component';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({

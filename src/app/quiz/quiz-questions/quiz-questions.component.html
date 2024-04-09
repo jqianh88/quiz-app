@@ -48,16 +48,7 @@
       </ng-container>
 
       <ng-container *ngIf="isQuizCompleted">
-          <div class="row d-flex justify-content-between">
-              <img style="width: 50%;" class="img-fluid col-sm-12 mx-auto" src="https://icon-library.com/images/celebration-icon-png/celebration-icon-png-7.jpg" alt="">
-              <div class="result text-center col-md-6 col-sm-12">
-                  <h3>Congratulations!! <br>You have completed the quiz.</h3>
-                  <p>Total Question Attempted : {{questionList.length}} </p>
-                  <p>Total Correct Answered : {{correctAnswer}} </p>
-                  <p>Total Wrong Answered : {{inCorrectAnswer}} </p>
-                  <p>Your Score : {{points}} Points </p>
-              </div>
-          </div>
+        <app-quiz-results></app-quiz-results>
       </ng-container>
 
   </div>

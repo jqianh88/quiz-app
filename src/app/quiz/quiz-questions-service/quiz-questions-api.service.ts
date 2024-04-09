@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
+import { ApiQuizResults } from './quiz-questions.models';
 @Injectable({
   providedIn: 'root'
 })
-export class QuizQuestionsService {
+export class QuizQuestionsApiService {
 
   constructor(private http : HttpClient) { }
 
   getQuestionJson(){
-    return this.http.get<any>("assets/questions.json");
+    return this.http.get<ApiQuizResults>("assets/questions.json");
   }
 }

@@ -1,14 +1,15 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
-import { QuizQuestionsService } from './quiz-questions.service';
-import { WelcomeComponent } from '../welcome/welcome.component';
-import { ChangeBgDirective } from '../change-bg.directive';
+import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
+import { WelcomeComponent } from '../../welcome/welcome.component';
+import { ChangeBgDirective } from '../../change-bg.directive';
 import { CommonModule } from '@angular/common';
+import { QuizResultsComponent } from '../quiz-results/quiz-results.component';
 
 @Component({
   selector: 'app-quiz-questions',
   standalone: true,
-  imports: [WelcomeComponent, CommonModule, ChangeBgDirective],
+  imports: [WelcomeComponent, CommonModule, ChangeBgDirective, QuizResultsComponent],
   templateUrl: './quiz-questions.component.html',
   styleUrl: './quiz-questions.component.scss'
 })
