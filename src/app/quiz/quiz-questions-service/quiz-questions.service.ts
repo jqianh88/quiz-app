@@ -2,13 +2,21 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
 import { ApiQuizResults, QuizQuestion } from './quiz-questions.models';
 import { QuizQuestionsApiService } from './quiz-questions-api.service';
-import { Observable, map, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, takeUntil } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 @Injectable({
   providedIn: 'root'
 })
 export class QuizQuestionsService {
   private questionList$: Observable<QuizQuestion[]> = this.questionApiService.getQuestionJson().pipe(takeUntilDestroyed(), map(res => res.questions));  // protects api service, return questions from the res object
+
+  currentQuestion$: BehaviorSubject<number> = new BehaviorSubject (0);
+  isQuizCompleted$: Observable<boolean> = combineLatest([this.questionList$, this.currentQuestion$]).pipe(
+    takeUntilDestroyed(),
+    map((questionList, currentQuestion) => questionList.length <= currentQuestion)
+    );
+
+
   constructor(private readonly questionApiService: QuizQuestionsApiService) { // Actually doing DI
     // this.questionApiService.getQuestionJson()
     // clean up memory leak - bind operator  to this component's lifecycle, more ideal than take(1)
@@ -20,10 +28,6 @@ export class QuizQuestionsService {
 
   public getQuestionList(){
     return this.questionList$;
-  }
-
-  public isLastQuestion(currentQno: number){
-    return true;
   }
 
   public getProgressPercent(currentQno: number){

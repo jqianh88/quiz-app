@@ -6,12 +6,12 @@ import { ChangeBgDirective } from '../../change-bg.directive';
 import { CommonModule } from '@angular/common';
 import { QuizResultsComponent } from '../quiz-results/quiz-results.component';
 import { QuizQuestion } from '../quiz-questions-service/quiz-questions.models';
-import { LetDirective } from '@ngrx/component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 
 @Component({
   selector: 'app-quiz-questions',
   standalone: true,
-  imports: [WelcomeComponent, CommonModule, ChangeBgDirective, QuizResultsComponent, LetDirective],
+  imports: [WelcomeComponent, CommonModule, ChangeBgDirective, QuizResultsComponent, LetDirective, PushPipe],
   templateUrl: './quiz-questions.component.html',
   styleUrl: './quiz-questions.component.scss'
 })
@@ -25,7 +25,7 @@ export class QuizQuestionsComponent implements OnInit {
   inCorrectAnswer: number = 0;
   interval$: any;
   progress: string = "0";
-  isQuizCompleted : boolean = false;
+  isQuizCompleted$ : Observable<boolean> = this.quizQuestionsService.isQuizCompleted$;
   questionList$ : Observable<QuizQuestion[]>
   constructor(private quizQuestionsService: QuizQuestionsService) {
     this.questionList$ = this.quizQuestionsService.getQuestionList()
@@ -47,9 +47,7 @@ export class QuizQuestionsComponent implements OnInit {
     this.currentQuestion--;
   }
   answer(currentQno: number, option: any) {
-
-    if (this.quizQuestionsService.isLastQuestion(currentQno)){
-      this.isQuizCompleted = true;
+    if (this.isQuizCompleted$){
       this.stopCounter();
     }
     if (option.correct) {
@@ -110,3 +108,11 @@ export class QuizQuestionsComponent implements OnInit {
 
   }
 }
+
+
+
+
+// Comments:
+// Use ngrxPush vs async pipe
+// async has a flaw: broadens to include undefined, ngrxPush is the improved version
+// does lazy loading, deferal....superior to async pipe
