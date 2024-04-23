@@ -1,24 +1,21 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { Observable, interval } from 'rxjs';
-import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
-import { WelcomeComponent } from '../../welcome/welcome.component';
-import { ChangeBgDirective } from '../../change-bg.directive';
+import { QuizQuestionsService } from '../../quiz-questions-service/quiz-questions.service';
+import { WelcomeComponent } from '../../../welcome/welcome.component';
+import { ChangeBgDirective } from '../../../change-bg.directive';
 import { CommonModule } from '@angular/common';
-import { QuizResultsComponent } from '../quiz-results/quiz-results.component';
-import { QuizQuestion } from '../quiz-questions-service/quiz-questions.models';
+import { QuizResultsComponent } from '../../quiz-results/quiz-results.component';
+import { QuizQuestion } from '../../quiz-questions-service/quiz-questions.models';
 import { LetDirective, PushPipe } from '@ngrx/component';
-import { QuizQuestionsHeaderComponent } from './quiz-questions-header/quiz-questions-header.component';
-import { QuizQuestionsQuestionOptionComponent } from '../quiz-questions-question-option/quiz-questions-question-option.component';
-import { QuizQuestionsNavigationComponent } from './quiz-questions-navigation/quiz-questions-navigation.component';
 
 @Component({
-  selector: 'app-quiz-questions',
+  selector: 'app-quiz-questions-header',
   standalone: true,
-  imports: [WelcomeComponent, CommonModule, ChangeBgDirective, QuizResultsComponent, QuizQuestionsHeaderComponent, QuizQuestionsQuestionOptionComponent, QuizQuestionsNavigationComponent, LetDirective, PushPipe],
-  templateUrl: './quiz-questions.component.html',
-  styleUrl: './quiz-questions.component.scss'
+  imports: [WelcomeComponent, CommonModule, ChangeBgDirective, QuizResultsComponent, LetDirective, PushPipe],
+  templateUrl: './quiz-questions-header.component.html',
+  styleUrl: './quiz-questions-header.component.scss'
 })
-export class QuizQuestionsComponent implements OnInit {
+export class QuizQuestionsHeaderComponent implements OnInit {
 
   public name: string = "";
   public currentQuestion: number = 0;

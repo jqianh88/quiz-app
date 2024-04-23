@@ -13,7 +13,7 @@ export class QuizQuestionsService {
   currentQuestion$: BehaviorSubject<number> = new BehaviorSubject (0);
   isQuizCompleted$: Observable<boolean> = combineLatest([this.questionList$, this.currentQuestion$]).pipe(
     takeUntilDestroyed(),
-    map((questionList, currentQuestion) => questionList.length <= currentQuestion)
+    map((questionList, currentQuestion) => questionList.length < currentQuestion)
     );
 
 
