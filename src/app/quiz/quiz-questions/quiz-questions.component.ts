@@ -57,7 +57,7 @@ export class QuizQuestionsComponent implements OnInit {
       this.points += 10;
       this.correctAnswer++;
       setTimeout(() => {
-        this.currentQuestion++;
+        this.nextQuestion();
         this.resetCounter();
         this.getProgressPercent();
       }, 1000);
@@ -65,7 +65,7 @@ export class QuizQuestionsComponent implements OnInit {
 
     } else {
       setTimeout(() => {
-        this.currentQuestion++;
+        this.nextQuestion();
         this.inCorrectAnswer++;
         this.resetCounter();
         this.getProgressPercent();
