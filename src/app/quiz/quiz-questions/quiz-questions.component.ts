@@ -41,7 +41,9 @@ export class QuizQuestionsComponent implements OnInit {
 
   }
   nextQuestion() {
-    this.currentQuestion++;
+    let quizLen = 0;
+    this.questionList$.subscribe(data => quizLen = data.length);
+    this.currentQuestion = Math.min(this.currentQuestion + 1, quizLen - 1);
   }
   previousQuestion() {
     this.currentQuestion--;
@@ -54,7 +56,7 @@ export class QuizQuestionsComponent implements OnInit {
       this.points += 10;
       this.correctAnswer++;
       setTimeout(() => {
-        this.currentQuestion++;
+        this.nextQuestion();
         this.resetCounter();
         this.getProgressPercent();
       }, 1000);
@@ -62,7 +64,7 @@ export class QuizQuestionsComponent implements OnInit {
 
     } else {
       setTimeout(() => {
-        this.currentQuestion++;
+        this.nextQuestion();
         this.inCorrectAnswer++;
         this.resetCounter();
         this.getProgressPercent();
@@ -76,7 +78,7 @@ export class QuizQuestionsComponent implements OnInit {
       .subscribe(val => {
         this.counter--;
         if (this.counter === 0) {
-          this.currentQuestion++;
+          this.nextQuestion();
           this.counter = 60;
           this.points -= 10;
         }
