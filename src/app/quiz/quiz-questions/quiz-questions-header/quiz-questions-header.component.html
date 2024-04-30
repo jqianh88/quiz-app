@@ -1,14 +1,23 @@
 <div class="d-flex justify-content-around py-3">
   <div class="score">
-      <h5>{{points}} Points</h5>
+    <h5>{{ points }} Points</h5>
   </div>
   <div class="question-remain">
-      <span style="font-style: italic;">Question {{currentQuestion+1}} of {{(questionList$ | async)?.length}}</span>
+    <span style="font-style: italic"
+      >Question {{ currentQuestionNumber }} of {{ totalQuestions }}</span
+    >
   </div>
   <div class="timer">
-      <h5>{{counter}} sec ⏱</h5>
+    <h5>{{ counter }} sec ⏱</h5>
   </div>
 </div>
 <div class="progress mb-3">
-    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [ngStyle]="{'width':progress+'%'}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+  <div
+    class="progress-bar progress-bar-striped bg-success"
+    role="progressbar"
+    [ngStyle]="{ width: progress + '%' }"
+    aria-valuenow="25"
+    aria-valuemin="0"
+    aria-valuemax="100"
+  ></div>
 </div>
