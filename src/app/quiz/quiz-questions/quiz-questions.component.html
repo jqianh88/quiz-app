@@ -1,21 +1,41 @@
 <div class="container mt-5">
-  <div *ngrxLet="questionList$ as questionList" class="card">
-      <div class="d-flex justify-content-between p-3">
-          <div class="image">
-              <img src="https://img.icons8.com/color/96/000000/angularjs.png" width="90" alt="logo">
-          </div>
-          <div class="quiz-header">
-              <h4 style="font-family: cursive;">Angular & TypeScript Quiz!</h4>
-              <span style="font-style: italic;">Welcome {{name}}</span>
-          </div>
+  <div
+    *ngrxLet="quizQuestionsService.getQuestionList() as questionList"
+    class="card"
+  >
+    <div class="d-flex justify-content-between p-3">
+      <div class="image">
+        <img
+          src="https://img.icons8.com/color/96/000000/angularjs.png"
+          width="90"
+          alt="logo"
+        />
       </div>
-      @if (!(isQuizCompleted$ | ngrxPush)) {
-        <app-quiz-questions-header></app-quiz-questions-header>
-        <app-quiz-questions-question-option></app-quiz-questions-question-option>
-        <app-quiz-questions-navigation></app-quiz-questions-navigation>
-      } @else {
-        <app-quiz-results [questionList]="questionList ?? []"></app-quiz-results>
-      }
-
+      <div class="quiz-header">
+        <h4 style="font-family: cursive">Angular & TypeScript Quiz!</h4>
+        <span style="font-style: italic"
+          >Welcome {{ quizQuestionsService.name | ngrxPush }}</span
+        >
+      </div>
+    </div>
+    @if (quizQuestionsService.isQuizActive$ | ngrxPush) {
+    <app-quiz-questions-header
+      [counter]="quizQuestionsService.counter$ | ngrxPush"
+      [currentQuestionNumber]="
+        quizQuestionsService.currentQuestionNumber$ | ngrxPush
+      "
+      [points]="quizQuestionsService.points$ | ngrxPush"
+      [progress]="quizQuestionsService.progress$ | ngrxPush"
+      [totalQuestions]="quizQuestionsService.totalQuestions$ | ngrxPush"
+    ></app-quiz-questions-header>
+    <app-quiz-question
+      [quizQuestion]="quizQuestionService.quizQuestion$ | ngrxPush"
+      [isAnswered]="quizQuestionService.isAnswered$ | ngrxPush"
+      [isCorrect]="quizQuestionService.isCorrect$ | ngrxPush"
+    ></app-quiz-question>
+    <app-quiz-questions-navigation></app-quiz-questions-navigation>
+    } @else {
+    <app-quiz-results [questionList]="questionList ?? []"></app-quiz-results>
+    }
   </div>
 </div>

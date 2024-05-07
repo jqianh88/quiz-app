@@ -1,0 +1,17 @@
+<div class="question">
+  <div class="card">
+    <h3>{{ quizQuestion.questionText }}</h3>
+  </div>
+</div>
+<div class="options">
+  <ol *ngFor="let option of quizQuestion.options">
+    <li
+      [ngClass]="{ answered: isAnswered, correct: isCorrect }"
+      (click)="onClick(option)"
+    >
+      <div class="card">
+        {{ option.text }}
+      </div>
+    </li>
+  </ol>
+</div>

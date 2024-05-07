@@ -1,121 +1,49 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import { Observable, interval } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
-import { WelcomeComponent } from '../../welcome/welcome.component';
-import { ChangeBgDirective } from '../../change-bg.directive';
-import { CommonModule } from '@angular/common';
-import { QuizResultsComponent } from '../quiz-results/quiz-results.component';
-import { QuizQuestion } from '../quiz-questions-service/quiz-questions.models';
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { QuizQuestionsHeaderComponent } from './quiz-questions-header/quiz-questions-header.component';
-import { QuizQuestionsQuestionOptionComponent } from '../quiz-questions-question-option/quiz-questions-question-option.component';
+import { QuizQuestionComponent } from '../quiz-question/quiz-question.component';
 import { QuizQuestionsNavigationComponent } from './quiz-questions-navigation/quiz-questions-navigation.component';
+import { QuizResultsComponent } from '../quiz-results/quiz-results.component';
 
 @Component({
   selector: 'app-quiz-questions',
   standalone: true,
-  imports: [WelcomeComponent, CommonModule, ChangeBgDirective, QuizResultsComponent, QuizQuestionsHeaderComponent, QuizQuestionsQuestionOptionComponent, QuizQuestionsNavigationComponent, LetDirective, PushPipe],
+  imports: [
+    LetDirective,
+    PushPipe,
+    QuizQuestionsHeaderComponent,
+    QuizQuestionsNavigationComponent,
+    QuizQuestionComponent,
+    QuizResultsComponent,
+  ],
   templateUrl: './quiz-questions.component.html',
-  styleUrl: './quiz-questions.component.scss'
+  styleUrl: './quiz-questions.component.scss',
 })
 export class QuizQuestionsComponent implements OnInit {
+  constructor(private quizQuestionsService: QuizQuestionsService) {}
 
-  public name: string = "";
-  public currentQuestion: number = 0;
-  public points: number = 0;
-  counter = 60;
-  correctAnswer: number = 0;
-  inCorrectAnswer: number = 0;
-  interval$: any;
-  progress: string = "0";
-  isQuizCompleted$ : Observable<boolean> = this.quizQuestionsService.isQuizCompleted$;
-  questionList$ : Observable<QuizQuestion[]>
-  constructor(private quizQuestionsService: QuizQuestionsService) {
-    this.questionList$ = this.quizQuestionsService.getQuestionList()
-   }
+  public ngOnInit(): void {
+    this.quizQuestionsService.startQuiz();
+  }
 
-  ngOnInit(): void {
-    this.name = localStorage.getItem("name")!;
-    this.getAllQuestions();
-    this.startCounter();
+  public getAllQuestions() {
+    return this.quizQuestionsService.getQuestionList();
   }
-  getAllQuestions() {
-    return this.quizQuestionsService.getQuestionList()
 
+  public nextQuestion() {
+    this.quizQuestionsService.nextQuestion();
   }
-  nextQuestion() {
-    this.currentQuestion++;
-  }
-  previousQuestion() {
-    this.currentQuestion--;
-  }
-  answer(currentQno: number, option: any) {
-    if (this.isQuizCompleted$){ //modified this to use the observable
-      this.stopCounter();
-    }
-    if (option.correct) {
-      this.points += 10;
-      this.correctAnswer++;
-      setTimeout(() => {
-        this.nextQuestion();
-        this.resetCounter();
-        this.getProgressPercent();
-      }, 1000);
 
+  public previousQuestion() {
+    this.quizQuestionsService.previousQuestion();
+  }
 
-    } else {
-      setTimeout(() => {
-        this.nextQuestion();
-        this.inCorrectAnswer++;
-        this.resetCounter();
-        this.getProgressPercent();
-      }, 1000);
+  public answer(option: string) {
+    this.quizQuestionsService.answer(option);
+  }
 
-      this.points -= 10;
-    }
-  }
-  startCounter() {
-    this.interval$ = interval(1000)
-      .subscribe(val => {
-        this.counter--;
-        if (this.counter === 0) {
-          this.currentQuestion++;
-          this.counter = 60;
-          this.points -= 10;
-        }
-      });
-    setTimeout(() => {
-      this.interval$.unsubscribe();
-    }, 600000);
-  }
-  stopCounter() {
-    this.interval$.unsubscribe();
-    this.counter = 0;
-  }
-  resetCounter() {
-    this.stopCounter();
-    this.counter = 60;
-    this.startCounter();
-  }
-  resetQuiz() {
-    this.resetCounter();
-    this.getAllQuestions();
-    this.points = 0;
-    this.counter = 60;
-    this.currentQuestion = 0;
-    this.progress = "0";
-
-  }
-  getProgressPercent() {
-    return this.quizQuestionsService.getProgressPercent(this.currentQuestion);
-
+  public resetQuiz() {
+    this.quizQuestionsService.resetQuiz();
   }
 }
-
-
-
-
-// Comments:
-// Use ngrxPush vs async pipe
-// async has a flaw: broadens to include undefined, ngrxPush is the improved version
-// does lazy loading, deferal....superior to async pipe

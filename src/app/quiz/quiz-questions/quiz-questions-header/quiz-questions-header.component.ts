@@ -10,9 +10,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizQuestionsHeaderComponent {
-  @Input() currentQuestionNumber!: number;
-  @Input() totalQuestions!: number;
-  @Input() points!: number;
   @Input() counter!: number;
+  @Input() currentQuestionNumber!: number;
+  @Input() points!: number;
   @Input() progress!: number;
+  @Input() totalQuestions!: number;
 }
