@@ -29,9 +29,10 @@
       [totalQuestions]="quizQuestionsService.totalQuestions$ | ngrxPush"
     ></app-quiz-questions-header>
     <app-quiz-question
-      [quizQuestion]="quizQuestionService.quizQuestion$ | ngrxPush"
-      [isAnswered]="quizQuestionService.isAnswered$ | ngrxPush"
-      [isCorrect]="quizQuestionService.isCorrect$ | ngrxPush"
+      [quizQuestion]="quizQuestionService.currentQuizQuestion$ | ngrxPush"
+      [isAnswered]="quizQuestionService.isCurrentQuestionAnswered$ | ngrxPush"
+      [isCorrect]="quizQuestionService.isCurrentQuestionCorrect$ | ngrxPush"
+      (optionSelect)="onOptionSelect($event)"
     ></app-quiz-question>
     <app-quiz-questions-navigation></app-quiz-questions-navigation>
     } @else {
