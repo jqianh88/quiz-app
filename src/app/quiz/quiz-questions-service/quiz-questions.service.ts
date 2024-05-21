@@ -5,28 +5,55 @@ import { QuizQuestionsApiService } from './quiz-questions-api.service';
 import {
   BehaviorSubject,
   Observable,
+  Subject,
   combineLatest,
   map,
   takeUntil,
+  tap,
 } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Injectable({
   providedIn: 'root',
 })
 export class QuizQuestionsService {
-  private questionList$: Observable<QuizQuestion[]> = this.questionApiService
-    .getQuestionJson()
-    .pipe(
-      takeUntilDestroyed(),
-      map((res) => res.questions)
-    ); // protects api service, return questions from the res object
+  public questionList$: Subject<QuizQuestion[]> = new Subject();
 
-  public currentQuestion$: BehaviorSubject<number> = new BehaviorSubject(0);
+  public currentQuestionNumber$: BehaviorSubject<number> = new BehaviorSubject(
+    0
+  );
+
+  // public currentQuestion$: Observable<QuizQuestion> = combineLatest([
+  //   this.questionList$,
+  //   this.currentQuestionNumber$,
+  // ]).pipe(
+  //   takeUntilDestroyed(),
+  //   map(
+  //     ([questionList, currentQuestionNumber]): QuizQuestion =>
+  //       currentQuestionNumber > questionList.length - 1
+  //         ? questionList[questionList.length - 1]
+  //         : questionList[currentQuestionNumber]
+  //   )
+  // );
+
+  // public totalQuestions$: Observable<number> = this.questionList$.pipe(
+  //   takeUntilDestroyed(),
+  //   map((tl) => tl.length)
+  // );
+
+  // public progress$: Observable<number> = combineLatest([
+  //   this.currentQuestionNumber$,
+  //   this.totalQuestions$,
+  // ]).pipe(
+  //   takeUntilDestroyed(),
+  //   map(([currentQuestionNumber, totalQuestions]) =>
+  //     totalQuestions === 0 ? 0 : currentQuestionNumber / totalQuestions
+  //   )
+  // );
+
   public name$: BehaviorSubject<string> = new BehaviorSubject('Jessica');
   public isQuizActive$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   public counter$: BehaviorSubject<number> = new BehaviorSubject(0);
   public points$: BehaviorSubject<number> = new BehaviorSubject(0);
-  public progress$: BehaviorSubject<number> = new BehaviorSubject(0);
   public currentQuizQuestion$: BehaviorSubject<QuizQuestion> =
     new BehaviorSubject({} as QuizQuestion);
   public isCurrentQuestionAnswered$: BehaviorSubject<boolean> =
@@ -35,41 +62,37 @@ export class QuizQuestionsService {
     new BehaviorSubject(false);
   public isFirstQuestion$: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
-  public isQuizCompleted$: Observable<boolean> = combineLatest([
-    this.questionList$,
-    this.currentQuestion$,
-  ]).pipe(
-    takeUntilDestroyed(),
-    map(
-      (questionList, currentQuestion) => questionList.length < currentQuestion
-    )
-  );
-
-  public currentQuestionNumber$: BehaviorSubject<number> = new BehaviorSubject(
-    0
-  );
-  public totalQuestions$: BehaviorSubject<number> = new BehaviorSubject(0);
+  // public isQuizCompleted$: Observable<boolean> = combineLatest([
+  //   this.questionList$,
+  //   this.currentQuestionNumber$,
+  // ]).pipe(
+  //   takeUntilDestroyed(),
+  //   map(
+  //     (questionList, currentQuestionNumber) =>
+  //       questionList.length < currentQuestionNumber
+  //   )
+  // );
 
   constructor(private readonly questionApiService: QuizQuestionsApiService) {
-    // Actually doing DI
-    // this.questionApiService.getQuestionJson()
-    // clean up memory leak - bind operator  to this component's lifecycle, more ideal than take(1)
-    // .pipe(takeUntilDestroyed())
-    // .subscribe(res => {
-    //   this.questionList = res.questions;
-    // })
-  }
+    this.questionList$ = new Subject();
+    this.questionApiService
+      .getQuestionJson()
+      .pipe(takeUntilDestroyed())
+      .subscribe((res) => {
+        this.questionList$.next(res);
 
-  public getQuestionList() {
-    return this.questionList$;
+        this.currentQuestionNumber$.next(0);
+      });
   }
 
   public getProgressPercent(currentQno: number) {
     return (currentQno / 15) * 100;
   }
 
-  public startQuiz() {}
-  public previousQuestion() {}
+  // public startQuiz() {}
+  // public previousQuestion() {
+  //   this.currentQuestion$;
+  // }
   public resetQuiz() {}
   public nextQuestion() {}
   public answer(option: Option) {}

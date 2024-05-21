@@ -1,6 +1,8 @@
 <div class="container mt-5">
+  Hi
+  {{ quizQuestionsService.questionList$ | async | json }}
   <div
-    *ngrxLet="quizQuestionsService.getQuestionList() as questionList"
+    *ngrxLet="quizQuestionsService.questionList$ as questionList"
     class="card"
   >
     <div class="d-flex justify-content-between p-3">
@@ -28,10 +30,9 @@
       [progress]="(quizQuestionsService.progress$ | ngrxPush) || 0"
       [totalQuestions]="(quizQuestionsService.totalQuestions$ | ngrxPush) || 0"
     ></app-quiz-questions-header>
+    @if (quizQuestionsService.currentQuizQuestion$ | ngrxPush; as
+    currentQuestion ) {
     <app-quiz-question
-      *ngIf="
-        quizQuestionsService.currentQuizQuestion$ | ngrxPush as currentQuestion
-      "
       [quizQuestion]="currentQuestion"
       [isAnswered]="
         (quizQuestionsService.isCurrentQuestionAnswered$ | ngrxPush) || false
@@ -39,6 +40,7 @@
       [isCorrect]="quizQuestionsService.isCurrentQuestionCorrect$ | ngrxPush"
       (optionSelect)="onOptionSelect($event)"
     ></app-quiz-question>
+    }
     <app-quiz-questions-navigation
       [shouldAllowPreviousQuestion]="
         (quizQuestionsService.isFirstQuestion$ | ngrxPush) || false
