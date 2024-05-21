@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { QuizQuestionsHeaderComponent } from './quiz-questions-header/quiz-questions-header.component';
+import { Option } from '../quiz-questions-service/quiz-questions.models';
 import { QuizQuestionComponent } from '../quiz-question/quiz-question.component';
 import { QuizQuestionsNavigationComponent } from './quiz-questions-navigation/quiz-questions-navigation.component';
 import { QuizResultsComponent } from '../quiz-results/quiz-results.component';
@@ -21,7 +22,7 @@ import { QuizResultsComponent } from '../quiz-results/quiz-results.component';
   styleUrl: './quiz-questions.component.scss',
 })
 export class QuizQuestionsComponent implements OnInit {
-  constructor(private quizQuestionsService: QuizQuestionsService) {}
+  constructor(public quizQuestionsService: QuizQuestionsService) {}
 
   public ngOnInit(): void {
     this.quizQuestionsService.startQuiz();
@@ -31,19 +32,19 @@ export class QuizQuestionsComponent implements OnInit {
     return this.quizQuestionsService.getQuestionList();
   }
 
-  public nextQuestion() {
-    this.quizQuestionsService.nextQuestion();
-  }
-
-  public previousQuestion() {
+  public onPreviousQuestion() {
     this.quizQuestionsService.previousQuestion();
   }
 
-  public answer(option: string) {
-    this.quizQuestionsService.answer(option);
+  public onResetQuiz() {
+    this.quizQuestionsService.resetQuiz();
   }
 
-  public resetQuiz() {
-    this.quizQuestionsService.resetQuiz();
+  public onNextQuestion() {
+    this.quizQuestionsService.nextQuestion();
+  }
+
+  public onOptionSelect(option: Option) {
+    this.quizQuestionsService.answer(option);
   }
 }

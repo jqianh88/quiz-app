@@ -29,5 +29,5 @@ export class QuizQuestionComponent {
   @Input() isCorrect?: boolean;
 
   @Output() optionSelect: EventEmitter<Option> = new EventEmitter();
-  public onOptionSelect = (option: Option) => this.optionSelect.emit(option);
+  public onClick = (option: Option) => this.optionSelect.emit(option);
 }

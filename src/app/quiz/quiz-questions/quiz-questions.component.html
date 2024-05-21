@@ -14,27 +14,39 @@
       <div class="quiz-header">
         <h4 style="font-family: cursive">Angular & TypeScript Quiz!</h4>
         <span style="font-style: italic"
-          >Welcome {{ quizQuestionsService.name | ngrxPush }}</span
+          >Welcome {{ quizQuestionsService.name$ | ngrxPush }}</span
         >
       </div>
     </div>
     @if (quizQuestionsService.isQuizActive$ | ngrxPush) {
     <app-quiz-questions-header
-      [counter]="quizQuestionsService.counter$ | ngrxPush"
+      [counter]="(quizQuestionsService.counter$ | ngrxPush) || 0"
       [currentQuestionNumber]="
-        quizQuestionsService.currentQuestionNumber$ | ngrxPush
+        (quizQuestionsService.currentQuestionNumber$ | ngrxPush) || 0
       "
-      [points]="quizQuestionsService.points$ | ngrxPush"
-      [progress]="quizQuestionsService.progress$ | ngrxPush"
-      [totalQuestions]="quizQuestionsService.totalQuestions$ | ngrxPush"
+      [points]="(quizQuestionsService.points$ | ngrxPush) || 0"
+      [progress]="(quizQuestionsService.progress$ | ngrxPush) || 0"
+      [totalQuestions]="(quizQuestionsService.totalQuestions$ | ngrxPush) || 0"
     ></app-quiz-questions-header>
     <app-quiz-question
-      [quizQuestion]="quizQuestionService.currentQuizQuestion$ | ngrxPush"
-      [isAnswered]="quizQuestionService.isCurrentQuestionAnswered$ | ngrxPush"
-      [isCorrect]="quizQuestionService.isCurrentQuestionCorrect$ | ngrxPush"
+      *ngIf="
+        quizQuestionsService.currentQuizQuestion$ | ngrxPush as currentQuestion
+      "
+      [quizQuestion]="currentQuestion"
+      [isAnswered]="
+        (quizQuestionsService.isCurrentQuestionAnswered$ | ngrxPush) || false
+      "
+      [isCorrect]="quizQuestionsService.isCurrentQuestionCorrect$ | ngrxPush"
       (optionSelect)="onOptionSelect($event)"
     ></app-quiz-question>
-    <app-quiz-questions-navigation></app-quiz-questions-navigation>
+    <app-quiz-questions-navigation
+      [shouldAllowPreviousQuestion]="
+        (quizQuestionsService.isFirstQuestion$ | ngrxPush) || false
+      "
+      (previousQuestion)="onPreviousQuestion()"
+      (resetQuiz)="onResetQuiz()"
+      (nextQuestion)="onNextQuestion()"
+    ></app-quiz-questions-navigation>
     } @else {
     <app-quiz-results [questionList]="questionList ?? []"></app-quiz-results>
     }
