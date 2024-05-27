@@ -1,6 +1,4 @@
 <div class="container mt-5">
-  Hi
-  {{ quizQuestionsService.questionList$ | async | json }}
   <div
     *ngrxLet="quizQuestionsService.questionList$ as questionList"
     class="card"
@@ -24,7 +22,7 @@
     <app-quiz-questions-header
       [counter]="(quizQuestionsService.counter$ | ngrxPush) || 0"
       [currentQuestionNumber]="
-        (quizQuestionsService.currentQuestionNumber$ | ngrxPush) || 0
+        (quizQuestionsService.currentQuestionNumber$ | ngrxPush) || 1
       "
       [points]="(quizQuestionsService.points$ | ngrxPush) || 0"
       [progress]="(quizQuestionsService.progress$ | ngrxPush) || 0"
@@ -43,14 +41,16 @@
     }
     <app-quiz-questions-navigation
       [shouldAllowPreviousQuestion]="
-        (quizQuestionsService.isFirstQuestion$ | ngrxPush) || false
+        !(quizQuestionsService.isFirstQuestion$ | ngrxPush) || true
       "
       (previousQuestion)="onPreviousQuestion()"
       (resetQuiz)="onResetQuiz()"
       (nextQuestion)="onNextQuestion()"
     ></app-quiz-questions-navigation>
     } @else {
-    <app-quiz-results [questionList]="questionList ?? []"></app-quiz-results>
+    <app-quiz-results
+      [questionList]="(quizQuestionsService.questionList$ | ngrxPush) ?? []"
+    ></app-quiz-results>
     }
   </div>
 </div>
