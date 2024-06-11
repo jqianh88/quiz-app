@@ -4,14 +4,16 @@
   </div>
 </div>
 <div class="options">
-  <ol *ngFor="let option of quizQuestion.options">
-    <li
-      [ngClass]="{ answered: isAnswered, correct: isCorrect }"
-      (click)="onClick(option)"
-    >
-      <div class="card">
-        {{ option.text }}
-      </div>
-    </li>
-  </ol>
+  <div
+    *ngFor="let option of quizQuestion.options"
+    [ngClass]="{
+      answered: isAnswered && option.text === answer?.text,
+      correct: isCorrect && option.text === answer?.text
+    }"
+    (click)="onClick(option)"
+  >
+    <div>
+      {{ option.text }}
+    </div>
+  </div>
 </div>

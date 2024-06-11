@@ -36,6 +36,7 @@
         (quizQuestionsService.isCurrentQuestionAnswered$ | ngrxPush) || false
       "
       [isCorrect]="quizQuestionsService.isCurrentQuestionCorrect$ | ngrxPush"
+      [answer]="(quizQuestionsService.currentAnswer$ | ngrxPush) || null"
       (optionSelect)="onOptionSelect($event)"
     ></app-quiz-question>
     }

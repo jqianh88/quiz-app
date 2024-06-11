@@ -1,14 +1,13 @@
 :host {
- li {
-  &.answered {
-    background: red;
-    color: #fff;
-    border: 2px solid grey;
+  .options {
+    .answered {
+      background: red;
+      color: #fff;
+      border: 2px solid grey;
 
-    &.correct {
-      background: green;
+      &.correct {
+        background: green;
+      }
     }
   }
- }
-
 }

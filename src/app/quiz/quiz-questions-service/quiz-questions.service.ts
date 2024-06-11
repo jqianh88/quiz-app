@@ -50,6 +50,7 @@ export class QuizQuestionsService {
   public isQuizActive$ = new BehaviorSubject<boolean>(true);
   public counter$ = new BehaviorSubject<number>(60);
   public points$ = new BehaviorSubject<number>(0);
+  public currentAnswer$ = new BehaviorSubject<Option | null>(null);
   public isCurrentQuestionAnswered$ = new BehaviorSubject<boolean>(false);
   public isCurrentQuestionCorrect$ = new BehaviorSubject<boolean>(false);
   public isFirstQuestion$ = new BehaviorSubject<boolean>(true);
@@ -81,7 +82,10 @@ export class QuizQuestionsService {
 
   private setCurrentQuestion(index: number): void {
     const questionList = this.questionListSubject.getValue();
-    if (index >= 0 && index <= questionList.length) {
+    if (index >= 0 && index <= questionList.length) {      
+      this.currentAnswer$.next(null);
+      this.isCurrentQuestionCorrect$.next(false);
+      this.isCurrentQuestionAnswered$.next(false);
       this.currentQuestionNumber$.next(index);
       this.isFirstQuestion$.next(index === 0);
     }
@@ -96,6 +100,7 @@ export class QuizQuestionsService {
   public previousQuestion(): void {
     const currentIndex = this.currentQuestionNumber$.getValue();
     if (currentIndex > 0) {
+
       this.setCurrentQuestion(currentIndex - 1);
     }
   }
@@ -115,8 +120,19 @@ export class QuizQuestionsService {
   }
 
   public answer(option: Option): void {
-    // Implement the logic to handle answer selection
+    this.currentAnswer$.next(option);
+    this.isCurrentQuestionAnswered$.next(true);
+    this.isCurrentQuestionCorrect$.next(!!option.correct)
+    if (option.correct) {
+      this.points$.next(this.points$.value + 1)
+    }
   }
+
+
+
+
+
+
 
   // Don't think we need the below anymore because of progress$
   // public getProgressPercent(currentQno: number) {
