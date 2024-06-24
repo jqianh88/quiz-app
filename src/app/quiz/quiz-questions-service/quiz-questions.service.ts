@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { ApiQuizResults, Option, QuizQuestion } from './quiz-questions.models';
 import { QuizQuestionsApiService } from './quiz-questions-api.service';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 })
 export class QuizQuestionsService {
   private questionListSubject = new BehaviorSubject<QuizQuestion[]>([]);
+  private destroyRef = inject(DestroyRef);
+
   public questionList$ = this.questionListSubject.asObservable();
 
   public currentQuestionNumber$ = new BehaviorSubject<number>(1);
@@ -18,7 +20,7 @@ export class QuizQuestionsService {
     this.questionList$,
     this.currentQuestionNumber$,
   ]).pipe(
-    takeUntilDestroyed(),
+    takeUntilDestroyed(this.destroyRef),
     map(
       ([questionList, currentQuestionNumber]): QuizQuestion =>
         questionList[currentQuestionNumber - 1] // Want to display starting from 1, but index questions from 0
@@ -26,7 +28,7 @@ export class QuizQuestionsService {
   );
 
   public totalQuestions$: Observable<number> = this.questionList$.pipe(
-    takeUntilDestroyed(),
+    takeUntilDestroyed(this.destroyRef),
     map((questions) => questions.length)
   );
 
@@ -55,7 +57,7 @@ export class QuizQuestionsService {
     this.questionList$,
     this.currentQuestionNumber$,
   ]).pipe(
-    takeUntilDestroyed(),
+    takeUntilDestroyed(this.destroyRef),
     map(
       ([questionList, currentQuestionNumber]) =>
         currentQuestionNumber >= questionList.length
@@ -72,7 +74,7 @@ export class QuizQuestionsService {
   private loadQuestions() {
     this.questionApiService
       .getQuestionJson()
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((questions) => {
         this.questionListSubject.next(questions);
         this.setCurrentQuestion(1); // Set to first question
