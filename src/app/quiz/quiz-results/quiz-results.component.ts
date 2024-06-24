@@ -5,32 +5,33 @@ import { WelcomeComponent } from '../../welcome/welcome.component';
 import { ChangeBgDirective } from '../../change-bg.directive';
 import { CommonModule } from '@angular/common';
 import { QuizQuestion } from '../quiz-questions-service/quiz-questions.models';
+import { LetDirective, PushPipe } from '@ngrx/component';
 
 @Component({
   selector: 'app-quiz-results',
   standalone: true,
-  imports: [WelcomeComponent, CommonModule, ChangeBgDirective],
+  imports: [
+    WelcomeComponent,
+    CommonModule,
+    ChangeBgDirective,
+    PushPipe,
+    LetDirective,
+  ],
   templateUrl: './quiz-results.component.html',
-  styleUrl: './quiz-results.component.scss'
+  styleUrl: './quiz-results.component.scss',
 })
 export class QuizResultsComponent implements OnInit {
-
-  public name: string = "";
-  // public get questionList(): QuizQuestion[] {
-  //   return this.quizQuestionsService.getQuestionList()
-  // };
+  public name: string = '';
   @Input() questionList: QuizQuestion[] = [];
+
   public currentQuestion: number = 0;
-  public points: number = 0;
-  counter = 60;
   correctAnswer: number = 0;
   inCorrectAnswer: number = 0;
   interval$: any;
-  progress: string = "0";
-  isQuizCompleted : boolean = false;
+  progress: string = '0';
+  isQuizCompleted: boolean = false;
 
+  constructor(protected readonly questionsService: QuizQuestionsService) {}
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 }

@@ -1,10 +1,23 @@
-<div class="row d-flex justify-content-between">
-    <img style="width: 50%;" class="img-fluid col-sm-12 mx-auto" src="https://icon-library.com/images/celebration-icon-png/celebration-icon-png-7.jpg" alt="">
-    <div class="result text-center col-md-6 col-sm-12">
-        <h3>Congratulations!! <br>You have completed the quiz.</h3>
-        <p>Total Question Attempted : {{questionList.length}} </p>
-        <p>Total Correct Answered : {{correctAnswer}} </p>
-        <p>Total Wrong Answered : {{inCorrectAnswer}} </p>
-        <p>Your Score : {{points}} Points </p>
-    </div>
+<div
+  *ngrxLet="questionsService.points$ as points"
+  class="row d-flex justify-content-between"
+>
+  <span class="huge-emoji">{{ points > 5 ? "🥳" : "💩" }}</span>
+
+  <div class="result text-center col-md-6 col-sm-12">
+    <h3>Congratulations!! <br />You have completed the quiz.</h3>
+    <p>
+      Total Question Attempted :
+      {{ questionsService.questionsAttempted$ | ngrxPush }}
+    </p>
+    <p>
+      Total Correct Answered :
+      {{ questionsService.questionsCorrectlyAnswered$ | ngrxPush }}
+    </p>
+    <p>
+      Total Wrong Answered :
+      {{ questionsService.questionsIncorrectlyAnswered$ | ngrxPush }}
+    </p>
+    <p>Your Score : {{ points }} Points</p>
+  </div>
 </div>

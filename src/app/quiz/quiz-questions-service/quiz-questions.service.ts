@@ -1,16 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiQuizResults, Option, QuizQuestion } from './quiz-questions.models';
 import { QuizQuestionsApiService } from './quiz-questions-api.service';
-import {
-  BehaviorSubject,
-  Observable,
-  Subject,
-  combineLatest,
-  map,
-  takeUntil,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +43,9 @@ export class QuizQuestionsService {
   public isQuizActive$ = new BehaviorSubject<boolean>(true);
   public counter$ = new BehaviorSubject<number>(60);
   public points$ = new BehaviorSubject<number>(0);
+  public questionsAttempted$ = new BehaviorSubject<number>(0);
+  public questionsCorrectlyAnswered$ = new BehaviorSubject<number>(0);
+  public questionsIncorrectlyAnswered$ = new BehaviorSubject<number>(0);
   public currentAnswer$ = new BehaviorSubject<Option | null>(null);
   public isCurrentQuestionAnswered$ = new BehaviorSubject<boolean>(false);
   public isCurrentQuestionCorrect$ = new BehaviorSubject<boolean>(false);
@@ -66,7 +62,10 @@ export class QuizQuestionsService {
     )
   );
 
-  constructor(private readonly questionApiService: QuizQuestionsApiService) {
+  constructor(
+    private readonly questionApiService: QuizQuestionsApiService,
+    private router: Router
+  ) {
     this.loadQuestions();
   }
 
@@ -82,7 +81,7 @@ export class QuizQuestionsService {
 
   private setCurrentQuestion(index: number): void {
     const questionList = this.questionListSubject.getValue();
-    if (index >= 0 && index <= questionList.length) {      
+    if (index >= 0 && index <= questionList.length) {
       this.currentAnswer$.next(null);
       this.isCurrentQuestionCorrect$.next(false);
       this.isCurrentQuestionAnswered$.next(false);
@@ -94,13 +93,15 @@ export class QuizQuestionsService {
   public startQuiz(): void {
     this.loadQuestions();
     this.setCurrentQuestion(0);
+    this.isCurrentQuestionAnswered$.next(false);
+    this.questionsIncorrectlyAnswered$.next(0);
+    this.questionsIncorrectlyAnswered$.next(0);
     this.isQuizActive$.next(true);
   }
 
   public previousQuestion(): void {
     const currentIndex = this.currentQuestionNumber$.getValue();
     if (currentIndex > 0) {
-
       this.setCurrentQuestion(currentIndex - 1);
     }
   }
@@ -108,31 +109,43 @@ export class QuizQuestionsService {
   public nextQuestion(): void {
     const currentIndex = this.currentQuestionNumber$.getValue();
     const questionList = this.questionListSubject.getValue();
-    if (currentIndex < questionList.length) {
+    this.questionsAttempted$.next(this.questionsAttempted$.getValue() + 1);
+    if (!this.isCurrentQuestionAnswered$.getValue()) {
+      this.questionsIncorrectlyAnswered$.next(
+        this.questionsIncorrectlyAnswered$.getValue() + 1
+      );
+    }
+
+    if (
+      currentIndex >= questionList.length &&
+      this.isCurrentQuestionAnswered$
+    ) {
+      this.router.navigate(['/quiz-results']);
+    } else if (currentIndex < questionList.length) {
       this.setCurrentQuestion(currentIndex + 1);
     }
   }
 
   public resetQuiz(): void {
-    this.setCurrentQuestion(0);
-    this.points$.next(0);
-    this.isQuizActive$.next(true);
+    console.log('are we working?');
+    this.startQuiz();
   }
 
   public answer(option: Option): void {
     this.currentAnswer$.next(option);
     this.isCurrentQuestionAnswered$.next(true);
-    this.isCurrentQuestionCorrect$.next(!!option.correct)
+    this.isCurrentQuestionCorrect$.next(!!option.correct);
     if (option.correct) {
-      this.points$.next(this.points$.value + 1)
+      this.points$.next(this.points$.value + 1);
+      this.questionsCorrectlyAnswered$.next(
+        this.questionsCorrectlyAnswered$.getValue() + 1
+      );
+    } else {
+      this.questionsIncorrectlyAnswered$.next(
+        this.questionsIncorrectlyAnswered$.getValue() + 1
+      );
     }
   }
-
-
-
-
-
-
 
   // Don't think we need the below anymore because of progress$
   // public getProgressPercent(currentQno: number) {
