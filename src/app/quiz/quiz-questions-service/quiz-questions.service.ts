@@ -1,5 +1,5 @@
 import { DestroyRef, Injectable, inject } from '@angular/core';
-import { ApiQuizResults, Option, QuizQuestion } from './quiz-questions.models';
+import { Option, QuizQuestion } from './quiz-questions.models';
 import { QuizQuestionsApiService } from './quiz-questions-api.service';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
