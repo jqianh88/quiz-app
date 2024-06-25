@@ -96,7 +96,7 @@ export class QuizQuestionsService {
     this.loadQuestions();
     this.setCurrentQuestion(0);
     this.isCurrentQuestionAnswered$.next(false);
-    this.questionsIncorrectlyAnswered$.next(0);
+    this.questionsCorrectlyAnswered$.next(0);
     this.questionsIncorrectlyAnswered$.next(0);
     this.isQuizActive$.next(true);
   }
