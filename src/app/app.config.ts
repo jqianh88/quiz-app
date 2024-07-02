@@ -1,13 +1,14 @@
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { ApplicationConfig } from '@angular/core';
-import { provideClientHydration } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
-import { provideEffects } from '@ngrx/effects';
-import { provideState, provideStore } from '@ngrx/store';
+import {provideHttpClient, withFetch} from '@angular/common/http';
+import {ApplicationConfig} from '@angular/core';
+import {provideClientHydration} from '@angular/platform-browser';
+import {provideRouter} from '@angular/router';
+import {provideEffects} from '@ngrx/effects';
+import {provideState, provideStore} from '@ngrx/store';
+import {provideStoreDevtools} from '@ngrx/store-devtools';
 
-import { TrackingEffects } from './+state/quiz.effects';
-import { trackingReducer } from './+state/quiz.reducer';
-import { routes } from './app.routes';
+import {QuizEffects} from './+state/quiz.effects';
+import {QUIZ_FEATURE_KEY, quizReducer} from './+state/quiz.reducer';
+import {routes} from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +16,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideClientHydration(),
     provideStore([]),
-    provideState('quiz', trackingReducer),
-    provideEffects([TrackingEffects]),
+    provideState(QUIZ_FEATURE_KEY, quizReducer),
+    provideEffects([QuizEffects]),
+    provideStoreDevtools(),
   ],
 };

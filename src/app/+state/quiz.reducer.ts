@@ -1,52 +1,21 @@
-import { createReducer, on } from '@ngrx/store';
+import {createReducer, on} from '@ngrx/store';
 
-import * as FfTrackingActions from './quiz.actions';
-import { FfTrackingInfo } from './quiz.models';
+import {abcSet, defSet} from './quiz.actions';
 
-export interface FfState {
-  trackingNumbers: string;
-  selectedTrackingNumber: string | null;
-  trackingInfos: FfTrackingInfo[];
-  error: string;
-  isLoading: boolean;
+export const QUIZ_FEATURE_KEY = 'quiz';
+
+export interface QuizState {
+  abc: string;
+  def: string;
 }
 
-export const initialState: FfState = {
-  trackingNumbers: '',
-  selectedTrackingNumber: null,
-  trackingInfos: [],
-  error: '',
-  isLoading: false,
+export const initialState: QuizState = {
+  abc: '098',
+  def: 'kdjfalksdjfk',
 };
 
-export const trackingReducer = createReducer(
+export const quizReducer = createReducer(
   initialState,
-  on(FfTrackingActions.trackingNumbersSet, (state, { trackingNumbers }) => ({
-    ...state,
-    trackingNumbers,
-  })),
-  on(FfTrackingActions.loadTrackingInfoSuccess, (state, { trackingInfos }) => ({
-    ...state,
-    trackingInfos,
-    error: '',
-    isLoading: false,
-  })),
-  on(FfTrackingActions.loadTrackingInfoFailure, (state, { error }) => ({
-    ...state,
-    trackingInfos: [],
-    error,
-    isLoading: false,
-  })),
-  on(
-    FfTrackingActions.selectedTrackingNumberSet,
-    (state, { selectedTrackingNumber }) => ({
-      ...state,
-      selectedTrackingNumber,
-    })
-  ),
-  on(FfTrackingActions.clearError, (state) => ({ ...state, error: '' })),
-  on(FfTrackingActions.isLoadingSet, (state, { isLoading }) => ({
-    ...state,
-    isLoading,
-  }))
+  on(abcSet, (state, { abc }) => ({ ...state, abc })),
+  on(defSet, (state, { def }) => ({ ...state, def }))
 );
