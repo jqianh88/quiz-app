@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
-import { LetDirective, PushPipe } from '@ngrx/component';
-import { QuizQuestionsHeaderComponent } from './quiz-questions-header/quiz-questions-header.component';
-import { Option } from '../quiz-questions-service/quiz-questions.models';
-import { QuizQuestionComponent } from '../quiz-question/quiz-question.component';
-import { QuizQuestionsNavigationComponent } from './quiz-questions-navigation/quiz-questions-navigation.component';
-import { QuizResultsComponent } from '../quiz-results/quiz-results.component';
 import { AsyncPipe, JsonPipe } from '@angular/common';
+import { Component } from '@angular/core';
+import { LetDirective, PushPipe } from '@ngrx/component';
+
+import { Option } from '../../+state/quiz.models';
+import { QuizQuestionComponent } from '../quiz-question/quiz-question.component';
+import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
+import { QuizResultsComponent } from '../quiz-results/quiz-results.component';
+import { QuizQuestionsHeaderComponent } from './quiz-questions-header/quiz-questions-header.component';
+import { QuizQuestionsNavigationComponent } from './quiz-questions-navigation/quiz-questions-navigation.component';
 
 @Component({
   selector: 'app-quiz-questions',

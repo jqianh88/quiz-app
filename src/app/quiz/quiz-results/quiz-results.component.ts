@@ -1,11 +1,11 @@
-import { Component, Input, NgModule, OnInit } from '@angular/core';
-import { interval } from 'rxjs';
-import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
-import { WelcomeComponent } from '../../welcome/welcome.component';
-import { ChangeBgDirective } from '../../change-bg.directive';
 import { CommonModule } from '@angular/common';
-import { QuizQuestion } from '../quiz-questions-service/quiz-questions.models';
+import { Component, Input, OnInit } from '@angular/core';
 import { LetDirective, PushPipe } from '@ngrx/component';
+
+import { QuizQuestion } from '../../+state/quiz.models';
+import { ChangeBgDirective } from '../../change-bg.directive';
+import { WelcomeComponent } from '../../welcome/welcome.component';
+import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
 
 @Component({
   selector: 'app-quiz-results',

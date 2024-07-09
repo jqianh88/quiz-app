@@ -1,20 +1,9 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  NgModule,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { Observable, interval } from 'rxjs';
-import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
-import { ChangeBgDirective } from '../../change-bg.directive';
 import { CommonModule, NgClass } from '@angular/common';
-import {
-  QuizQuestion,
-  Option,
-} from '../quiz-questions-service/quiz-questions.models';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LetDirective, PushPipe } from '@ngrx/component';
+
+import { Option, QuizQuestion } from '../../+state/quiz.models';
+import { ChangeBgDirective } from '../../change-bg.directive';
 
 @Component({
   selector: 'app-quiz-question',

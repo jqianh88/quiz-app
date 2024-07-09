@@ -1,21 +1,29 @@
-import {createReducer, on} from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 
-import {abcSet, defSet} from './quiz.actions';
+import { nameSet } from './quiz.actions';
+import { QuizQuestion } from './quiz.models';
 
 export const QUIZ_FEATURE_KEY = 'quiz';
 
 export interface QuizState {
-  abc: string;
-  def: string;
+  name: string;
+  isQuizActive: boolean;
+  quizQuestions: QuizQuestion[];
+  selectedQuizQuestionIndex: number | null;
+  currentOptionIndex: number | null;
+  correctAnswerCount: number;
 }
 
 export const initialState: QuizState = {
-  abc: '098',
-  def: 'kdjfalksdjfk',
+  name: 'Jessica',
+  isQuizActive: false,
+  quizQuestions: [],
+  selectedQuizQuestionIndex: null,
+  currentOptionIndex: null,
+  correctAnswerCount: 0,
 };
 
 export const quizReducer = createReducer(
   initialState,
-  on(abcSet, (state, { abc }) => ({ ...state, abc })),
-  on(defSet, (state, { def }) => ({ ...state, def }))
+  on(nameSet, (state, { name }) => ({ ...state, name }))
 );

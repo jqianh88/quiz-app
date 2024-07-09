@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ApiQuizResults, QuizQuestion } from './quiz-questions.models';
-import { Observable, map } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
+
+import { ApiQuizResults, QuizQuestion } from '../../+state/quiz.models';
+
 @Injectable({
   providedIn: 'root',
 })

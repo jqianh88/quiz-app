@@ -1,9 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {mergeMap} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Actions } from '@ngrx/effects';
 
-import {QuizApiService} from './quiz-api.service';
-import {abcSet, defSet, setAbc} from './quiz.actions';
+import { QuizApiService } from './quiz-api.service';
 
 @Injectable()
 export class QuizEffects {
@@ -12,10 +10,10 @@ export class QuizEffects {
     private quizApiService: QuizApiService
   ) {}
 
-  private setAbc$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(setAbc),
-      mergeMap(({ abc }) => [abcSet({ abc }), defSet({ def: 'my override' })])
-    )
-  );
+  // private setAbc$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(setAbc),
+  //     mergeMap(({ abc }) => [abcSet({ abc }), defSet({ def: 'my override' })])
+  //   )
+  // );
 }
