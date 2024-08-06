@@ -1,9 +1,16 @@
-// export const setAbc = createAction('[Quiz] Set Abc', props<{ abc: string }>());
 import { createAction, props } from '@ngrx/store';
+import { Option, QuizQuestion } from './quiz.models';
 
-// initQuiz
+export const initQuiz = createAction('[Quiz] initQuiz');
 
-// load Questions
+export const setName = createAction(
+  '[Quiz] setName',
+  props<{ name: string }>()
+);
+export const nameSet = createAction(
+  '[Quiz] nameSet',
+  props<{ name: string }>()
+);
 
 // private loadQuestions() {
 //   this.questionApiService
@@ -15,7 +22,11 @@ import { createAction, props } from '@ngrx/store';
 //     });
 // }
 
-// startQuiz
+export const loadQuestions = createAction('[Quiz] loadQuestions');
+export const questionsLoaded = createAction(
+  '[Quiz] questionsLoaded',
+  props<{ quizQuestions: QuizQuestion[] }>()
+);
 
 // public startQuiz(): void {
 //   this.loadQuestions();
@@ -26,13 +37,25 @@ import { createAction, props } from '@ngrx/store';
 //   this.isQuizActive$.next(true);
 // }
 
-// reset Quiz
+export const startQuiz = createAction('[Quiz] startQuiz');
+export const quizStarted = createAction('[Quiz] quizStarted');
+
+export const setIsQuizActive = createAction(
+  '[Quiz] setIsQuizActive',
+  props<{ isQuizActive: boolean }>()
+);
+export const isQuizActiveSet = createAction(
+  '[Quiz] isQuizActiveSet',
+  props<{ isQuizActive: boolean }>()
+);
+
 // public resetQuiz(): void {
 //   console.log('are we working?');
 //   this.startQuiz();
 // }
 
-// previous Question
+export const resetQuiz = createAction('[Quiz] resetQuiz');
+export const quizReset = createAction('[Quiz] quizReset');
 
 // public previousQuestion(): void {
 //   const currentIndex = this.currentQuestionNumber$.getValue();
@@ -41,7 +64,9 @@ import { createAction, props } from '@ngrx/store';
 //   }
 // }
 
-// next Question
+export const navigateToPreviousQuestion = createAction(
+  '[Quiz] navigateToPreviousQuestion'
+);
 
 // public nextQuestion(): void {
 //   const currentIndex = this.currentQuestionNumber$.getValue();
@@ -63,7 +88,14 @@ import { createAction, props } from '@ngrx/store';
 //   }
 // }
 
-// Answer Current Question
+export const navigateToNextQuestion = createAction(
+  '[Quiz] navigateToNextQuestion'
+);
+
+export const selectedQuizQuestionIndexSet = createAction(
+  '[Quiz] selectedQuizQuestionIndexSet',
+  props<{ selectedQuizQuestionIndex: number | null }>()
+);
 
 // public answer(option: Option): void {
 //   this.currentAnswer$.next(option);
@@ -81,11 +113,16 @@ import { createAction, props } from '@ngrx/store';
 //   }
 // }
 
-export const setName = createAction(
-  '[Quiz] Set Name',
-  props<{ name: string }>()
+export const answerCurrentQuestion = createAction(
+  '[Quiz] answerCurrentQuestion',
+  props<{ option: Option }>()
 );
-export const nameSet = createAction(
-  '[Quiz] Name Set',
-  props<{ name: string }>()
+
+export const currentOptionIndexSet = createAction(
+  '[Quiz] currentOptionIndexSet',
+  props<{ currentOptionIndex: number | null }>()
+);
+export const correctAnswerCountSet = createAction(
+  '[Quiz] correctAnswerCountSet',
+  props<{ correctAnswerCount: number }>()
 );

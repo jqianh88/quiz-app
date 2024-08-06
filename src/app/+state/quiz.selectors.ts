@@ -1,8 +1,30 @@
-import { createFeatureSelector } from '@ngrx/store';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
 
-import { QUIZ_FEATURE_KEY, QuizState } from './quiz.reducer';
+import {QUIZ_FEATURE_KEY, QuizState} from './quiz.reducer';
 
 const selectQuizState = createFeatureSelector<QuizState>(QUIZ_FEATURE_KEY);
+
+export const getName = createSelector(selectQuizState, (state): string => state.name || '');
+
+export const getQuizQuestions = createSelector(selectQuizState, state => state.quizQuestions);
+
+export const getIsQuizActive = createSelector(selectQuizState, state => state.isQuizActive);
+
+export const getCurrentQuestionNumber = createSelector(selectQuizState, (state): number => state.selectedQuizQuestionIndex || 0);
+
+const getPointsPerCorrectAnswer = createSelector(selectQuizState, state => state.pointsPerCorrectAnswer);
+
+export const getCorrectAnswerCount = createSelector(selectQuizState, state => state.correctAnswerCount);
+
+export const getPoints = createSelector(
+  getCorrectAnswerCount,
+  getPointsPerCorrectAnswer,
+  (correctAnswerCount, pointsPerCorrectAnswer) => correctAnswerCount * pointsPerCorrectAnswer
+);
+
+export const getProgress = createSelector(selectQuizState, state => 0);
+
+export const getTotalQuestions = createSelector(getQuizQuestions, quizQuestions => quizQuestions.length);
 
 // export const getAbc = createSelector(
 //   selectQuizState,

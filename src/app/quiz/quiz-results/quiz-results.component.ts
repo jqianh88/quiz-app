@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { LetDirective, PushPipe } from '@ngrx/component';
+import {CommonModule} from '@angular/common';
+import {Component, Input} from '@angular/core';
+import {LetDirective, PushPipe} from '@ngrx/component';
 
-import { QuizQuestion } from '../../+state/quiz.models';
-import { ChangeBgDirective } from '../../change-bg.directive';
-import { WelcomeComponent } from '../../welcome/welcome.component';
-import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
+import {QuizQuestion} from '../../+state/quiz.models';
+import {ChangeBgDirective} from '../../change-bg.directive';
+import {WelcomeComponent} from '../../welcome/welcome.component';
+import {QuizQuestionsService} from '../quiz-questions-service/quiz-questions.service';
 
 @Component({
   selector: 'app-quiz-results',
@@ -20,7 +20,7 @@ import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.s
   templateUrl: './quiz-results.component.html',
   styleUrl: './quiz-results.component.scss',
 })
-export class QuizResultsComponent implements OnInit {
+export class QuizResultsComponent {
   public name: string = '';
   @Input() questionList: QuizQuestion[] = [];
 
@@ -32,6 +32,4 @@ export class QuizResultsComponent implements OnInit {
   isQuizCompleted: boolean = false;
 
   constructor(protected readonly questionsService: QuizQuestionsService) {}
-
-  ngOnInit(): void {}
 }

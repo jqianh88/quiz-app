@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-
-import { QuizQuestionsApiService } from './quiz-questions-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -63,12 +60,12 @@ export class QuizQuestionsService {
   //   )
   // );
 
-  constructor(
-    private readonly questionApiService: QuizQuestionsApiService,
-    private router: Router
-  ) {
-    // this.loadQuestions();
-  }
+  // constructor(
+  //   private readonly questionApiService: QuizQuestionsApiService,
+  //   private router: Router
+  // ) {
+  //   // this.loadQuestions();
+  // }
 
   // private loadQuestions() {
   //   this.questionApiService
