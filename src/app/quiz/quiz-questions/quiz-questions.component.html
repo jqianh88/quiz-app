@@ -16,22 +16,22 @@
       [points]="(points$ | ngrxPush) || 0"
       [progress]="(progress$ | ngrxPush) || 0"
       [totalQuestions]="(totalQuestions$ | ngrxPush) || 0"
-    ></app-quiz-questions-header>
-    <!-- @if (quizQuestionsService.currentQuizQuestion$ | ngrxPush; as currentQuestion ) {
+    />
+    @let currentQuestion = currentQuestion$ | ngrxPush; @if (currentQuestion) {
     <app-quiz-question
       [quizQuestion]="currentQuestion"
-      [isAnswered]="(quizQuestionsService.isCurrentQuestionAnswered$ | ngrxPush) || false"
-      [isCorrect]="quizQuestionsService.isCurrentQuestionCorrect$ | ngrxPush"
-      [answer]="(quizQuestionsService.currentAnswer$ | ngrxPush) || null"
+      [isAnswered]="(isCurrentQuestionAnswered$ | ngrxPush) || false"
+      [isCorrect]="isCurrentQuestionCorrect$ | ngrxPush"
+      [answer]="(currentOption$ | ngrxPush) || null"
       (optionSelect)="onOptionSelect($event)"
-    ></app-quiz-question>
-    } -->
+    />
+    }
     <!-- <app-quiz-questions-navigation
       [shouldAllowPreviousQuestion]="!(quizQuestionsService.isFirstQuestion$ | ngrxPush) || true"
       (previousQuestion)="onPreviousQuestion()"
       (resetQuiz)="onResetQuiz()"
       (nextQuestion)="onNextQuestion()"
-    ></app-quiz-questions-navigation> -->
+    /> -->
     }
   </div>
 </div>

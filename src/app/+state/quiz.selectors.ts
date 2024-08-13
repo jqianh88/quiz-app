@@ -1,5 +1,6 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 
+import {Option, QuizQuestion} from './quiz.models';
 import {QUIZ_FEATURE_KEY, QuizState} from './quiz.reducer';
 
 const selectQuizState = createFeatureSelector<QuizState>(QUIZ_FEATURE_KEY);
@@ -25,6 +26,26 @@ export const getPoints = createSelector(
 export const getProgress = createSelector(selectQuizState, state => 0);
 
 export const getTotalQuestions = createSelector(getQuizQuestions, quizQuestions => quizQuestions.length);
+
+export const getCurrentQuestion = createSelector(
+  getQuizQuestions,
+  getCurrentQuestionNumber,
+  (quizQuestions, currentQuestionNumber): QuizQuestion => quizQuestions[currentQuestionNumber]
+);
+
+const getCurrentOptionIndex = createSelector(selectQuizState, (state): number | null => state.currentOptionIndex);
+
+export const getCurrentOption = createSelector(
+  getCurrentQuestion,
+  getCurrentOptionIndex,
+  (currentQuestion, currentOptionIndex): Option | null => (currentOptionIndex !== null ? currentQuestion.options[currentOptionIndex] : null)
+);
+
+export const getIsCurrentQuestionAnswered = createSelector(
+  getCurrentOptionIndex,
+  (currentOptionIndex): boolean => currentOptionIndex !== null
+);
+export const getIsCurrentQuestionCorrect = createSelector(getCurrentOption, (currentOption): boolean => !!currentOption?.correct);
 
 // export const getAbc = createSelector(
 //   selectQuizState,

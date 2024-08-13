@@ -3,6 +3,8 @@ import {PushPipe} from '@ngrx/component';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
+import {answerCurrentQuestion} from '../../+state/quiz.actions';
+import {Option, QuizQuestion} from '../../+state/quiz.models';
 import * as quizSelectors from '../../+state/quiz.selectors';
 import {QuizQuestionComponent} from '../quiz-question/quiz-question.component';
 import {QuizQuestionsHeaderComponent} from './quiz-questions-header/quiz-questions-header.component';
@@ -26,6 +28,11 @@ export class QuizQuestionsComponent {
   protected progress$: Observable<number> = this.store.pipe(select(quizSelectors.getProgress));
   protected totalQuestions$: Observable<number> = this.store.pipe(select(quizSelectors.getTotalQuestions));
 
+  protected currentQuestion$: Observable<QuizQuestion> = this.store.pipe(select(quizSelectors.getCurrentQuestion));
+  protected isCurrentQuestionAnswered$: Observable<boolean> = this.store.pipe(select(quizSelectors.getIsCurrentQuestionAnswered));
+  protected isCurrentQuestionCorrect$: Observable<boolean> = this.store.pipe(select(quizSelectors.getIsCurrentQuestionCorrect));
+  protected currentOption$: Observable<Option | null> = this.store.pipe(select(quizSelectors.getCurrentOption));
+
   // public ngOnInit(): void {
   //   this.quizQuestionsService.startQuiz();
   // }
@@ -45,4 +52,9 @@ export class QuizQuestionsComponent {
   // public onOptionSelect(option: Option) {
   //   this.quizQuestionsService.answer(option);
   // }
+
+  protected onOptionSelect(option: Option) {
+    this.store.dispatch(answerCurrentQuestion({option}));
+    console.log(option);
+  }
 }
