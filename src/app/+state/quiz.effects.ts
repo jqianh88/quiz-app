@@ -1,13 +1,14 @@
 import {inject, Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Actions, createEffect, ofType, OnInitEffects} from '@ngrx/effects';
+import {concatLatestFrom} from '@ngrx/operators';
 import {Action, select, Store} from '@ngrx/store';
 import {filter, map, mergeMap, switchMap, tap, withLatestFrom} from 'rxjs';
 
 import {QuizApiService} from './quiz-api.service';
 import * as quizActions from './quiz.actions';
 import {answerCurrentQuestion, currentOptionIndexSet} from './quiz.actions';
-import {getCurrentOption, getCurrentQuestion} from './quiz.selectors';
+import {getCurrentOption, getCurrentQuestion, getCurrentQuestionNumber, getTotalQuestions} from './quiz.selectors';
 
 @Injectable()
 export class QuizEffects implements OnInitEffects {
@@ -62,6 +63,24 @@ export class QuizEffects implements OnInitEffects {
       map(([{option}, currentQuestion]) =>
         currentOptionIndexSet({currentOptionIndex: currentQuestion.options.findIndex(o => o === option)})
       )
+    )
+  );
+
+  private navigateToPreviousQuestion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(quizActions.navigateToPreviousQuestion),
+      concatLatestFrom(_ => [this.store.pipe(select(getCurrentQuestionNumber)), this.store.pipe(select(getTotalQuestions))]),
+      map(([, currentIndex, lengthOfQuestions]) => (lengthOfQuestions === 0 ? null : Math.max(currentIndex - 1, 0))),
+      map(selectedQuizQuestionIndex => quizActions.selectedQuizQuestionIndexSet({selectedQuizQuestionIndex}))
+    )
+  );
+
+  private navigateToNextQuestion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(quizActions.navigateToNextQuestion),
+      concatLatestFrom(_ => [this.store.pipe(select(getCurrentQuestionNumber)), this.store.pipe(select(getTotalQuestions))]),
+      map(([, currentIndex, lengthOfQuestions]) => (lengthOfQuestions === 0 ? null : Math.min(lengthOfQuestions - 1, currentIndex + 1))),
+      map(selectedQuizQuestionIndex => quizActions.selectedQuizQuestionIndexSet({selectedQuizQuestionIndex}))
     )
   );
 }

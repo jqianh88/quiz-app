@@ -3,7 +3,7 @@ import {PushPipe} from '@ngrx/component';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
-import {answerCurrentQuestion} from '../../+state/quiz.actions';
+import {answerCurrentQuestion, navigateToNextQuestion, navigateToPreviousQuestion, resetQuiz} from '../../+state/quiz.actions';
 import {Option, QuizQuestion} from '../../+state/quiz.models';
 import * as quizSelectors from '../../+state/quiz.selectors';
 import {QuizQuestionComponent} from '../quiz-question/quiz-question.component';
@@ -33,28 +33,10 @@ export class QuizQuestionsComponent {
   protected isCurrentQuestionCorrect$: Observable<boolean> = this.store.pipe(select(quizSelectors.getIsCurrentQuestionCorrect));
   protected currentOption$: Observable<Option | null> = this.store.pipe(select(quizSelectors.getCurrentOption));
 
-  // public ngOnInit(): void {
-  //   this.quizQuestionsService.startQuiz();
-  // }
+  protected getShouldAllowPreviousQuestion$: Observable<boolean> = this.store.pipe(select(quizSelectors.getShouldAllowPreviousQuestion));
 
-  // public onPreviousQuestion() {
-  //   this.quizQuestionsService.previousQuestion();
-  // }
-
-  // public onResetQuiz() {
-  //   this.quizQuestionsService.resetQuiz();
-  // }
-
-  // public onNextQuestion() {
-  //   this.quizQuestionsService.nextQuestion();
-  // }
-
-  // public onOptionSelect(option: Option) {
-  //   this.quizQuestionsService.answer(option);
-  // }
-
-  protected onOptionSelect(option: Option) {
-    this.store.dispatch(answerCurrentQuestion({option}));
-    console.log(option);
-  }
+  protected onPreviousQuestion = () => this.store.dispatch(navigateToPreviousQuestion());
+  protected onResetQuiz = () => this.store.dispatch(resetQuiz());
+  protected onNextQuestion = () => this.store.dispatch(navigateToNextQuestion());
+  protected onOptionSelect = (option: Option) => this.store.dispatch(answerCurrentQuestion({option}));
 }

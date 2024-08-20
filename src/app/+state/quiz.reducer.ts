@@ -13,6 +13,7 @@ export interface QuizState {
   currentOptionIndex: number | null;
   correctAnswerCount: number;
   pointsPerCorrectAnswer: number;
+  isFinalMode: boolean;
 }
 
 export const initialState: QuizState = {
@@ -23,6 +24,7 @@ export const initialState: QuizState = {
   currentOptionIndex: null,
   correctAnswerCount: 0,
   pointsPerCorrectAnswer: 3,
+  isFinalMode: true,
 };
 
 export const quizReducer = createReducer(

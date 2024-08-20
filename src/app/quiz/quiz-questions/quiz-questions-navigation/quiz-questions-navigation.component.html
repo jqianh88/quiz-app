@@ -1,9 +1,5 @@
 <div class="d-flex justify-content-between">
-  <button
-    [disabled]="!shouldAllowPreviousQuestion"
-    class="btn"
-    (click)="onPreviousClick()"
-  >
+  <button [disabled]="!shouldAllowPreviousQuestion" class="btn" (click)="onPreviousClick()">
     <i class="fa text-primary fa-chevron-left fa-3x" aria-hidden="true"></i>
   </button>
   <button class="btn" (click)="onResetClick()">

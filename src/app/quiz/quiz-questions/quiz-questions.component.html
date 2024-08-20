@@ -26,12 +26,12 @@
       (optionSelect)="onOptionSelect($event)"
     />
     }
-    <!-- <app-quiz-questions-navigation
-      [shouldAllowPreviousQuestion]="!(quizQuestionsService.isFirstQuestion$ | ngrxPush) || true"
+    <app-quiz-questions-navigation
+      [shouldAllowPreviousQuestion]="!(getShouldAllowPreviousQuestion$ | ngrxPush) || false"
       (previousQuestion)="onPreviousQuestion()"
       (resetQuiz)="onResetQuiz()"
       (nextQuestion)="onNextQuestion()"
-    /> -->
+    />
     }
   </div>
 </div>

@@ -47,6 +47,14 @@ export const getIsCurrentQuestionAnswered = createSelector(
 );
 export const getIsCurrentQuestionCorrect = createSelector(getCurrentOption, (currentOption): boolean => !!currentOption?.correct);
 
+const getIsFinalMode = createSelector(selectQuizState, state => state.isFinalMode);
+
+export const getShouldAllowPreviousQuestion = createSelector(
+  getIsFinalMode,
+  getCurrentQuestionNumber,
+  (isFinalMode, currentQuestionNumber) => !isFinalMode && !(currentQuestionNumber === 0)
+);
+
 // export const getAbc = createSelector(
 //   selectQuizState,
 //   (state): string => state.abc
