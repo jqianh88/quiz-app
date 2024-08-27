@@ -4,9 +4,11 @@ export interface Option {
 }
 
 export interface QuizQuestion {
+  id: number;
   questionText: string;
   options: Option[];
   explanation: string;
+  answerIndex?: number;
 }
 
 export interface ApiQuizResults {

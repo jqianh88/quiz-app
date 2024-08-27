@@ -28,7 +28,7 @@ export class QuizQuestionsComponent {
   protected progress$: Observable<number> = this.store.pipe(select(quizSelectors.getProgress));
   protected totalQuestions$: Observable<number> = this.store.pipe(select(quizSelectors.getTotalQuestions));
 
-  protected currentQuestion$: Observable<QuizQuestion> = this.store.pipe(select(quizSelectors.getCurrentQuestion));
+  protected currentQuestion$: Observable<QuizQuestion | undefined> = this.store.pipe(select(quizSelectors.getCurrentQuestion));
   protected isCurrentQuestionAnswered$: Observable<boolean> = this.store.pipe(select(quizSelectors.getIsCurrentQuestionAnswered));
   protected isCurrentQuestionCorrect$: Observable<boolean> = this.store.pipe(select(quizSelectors.getIsCurrentQuestionCorrect));
   protected currentOption$: Observable<Option | null> = this.store.pipe(select(quizSelectors.getCurrentOption));

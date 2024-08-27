@@ -7,10 +7,9 @@ export const QUIZ_FEATURE_KEY = 'quiz';
 
 export interface QuizState {
   name: string | null;
-  quizQuestions: QuizQuestion[];
+  quizQuestions: Map<QuizQuestion['id'], QuizQuestion>;
   isQuizActive: boolean;
-  selectedQuizQuestionIndex: number | null;
-  currentOptionIndex: number | null;
+  selectedQuizQuestionId?: QuizQuestion['id'];
   correctAnswerCount: number;
   pointsPerCorrectAnswer: number;
   isFinalMode: boolean;
@@ -18,22 +17,32 @@ export interface QuizState {
 
 export const initialState: QuizState = {
   name: null,
-  quizQuestions: [],
+  quizQuestions: new Map(),
   isQuizActive: false,
-  selectedQuizQuestionIndex: null,
-  currentOptionIndex: null,
   correctAnswerCount: 0,
   pointsPerCorrectAnswer: 3,
   isFinalMode: true,
 };
 
-export const quizReducer = createReducer(
+export const quizReducer = createReducer<QuizState>(
   initialState,
 
   on(quizActions.nameSet, (state, {name}) => ({...state, name})),
   on(quizActions.questionsLoaded, (state, {quizQuestions}) => ({...state, quizQuestions})),
   on(quizActions.isQuizActiveSet, (state, {isQuizActive}) => ({...state, isQuizActive})),
-  on(quizActions.selectedQuizQuestionIndexSet, (state, {selectedQuizQuestionIndex}) => ({...state, selectedQuizQuestionIndex})),
-  on(quizActions.currentOptionIndexSet, (state, {currentOptionIndex}) => ({...state, currentOptionIndex})),
+  on(quizActions.selectedQuizQuestionIdSet, (state, {selectedQuizQuestionId}) => ({...state, selectedQuizQuestionId})),
+  on(
+    quizActions.currentOptionIndexSet,
+
+    (state, {quizQuestionId, answerIndex}) => {
+      const question = state.quizQuestions.get(quizQuestionId);
+      return question === undefined
+        ? state
+        : {
+            ...state,
+            quizQuestions: new Map(state.quizQuestions).set(quizQuestionId, {...question, answerIndex}),
+          };
+    }
+  ),
   on(quizActions.correctAnswerCountSet, (state, {correctAnswerCount}) => ({...state, correctAnswerCount}))
 );

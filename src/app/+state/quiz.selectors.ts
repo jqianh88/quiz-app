@@ -11,7 +11,7 @@ export const getQuizQuestions = createSelector(selectQuizState, state => state.q
 
 export const getIsQuizActive = createSelector(selectQuizState, state => state.isQuizActive);
 
-export const getCurrentQuestionNumber = createSelector(selectQuizState, (state): number => state.selectedQuizQuestionIndex || 0);
+export const getCurrentQuestionNumber = createSelector(selectQuizState, (state): number => state.selectedQuizQuestionId || 1);
 
 const getPointsPerCorrectAnswer = createSelector(selectQuizState, state => state.pointsPerCorrectAnswer);
 
@@ -25,20 +25,26 @@ export const getPoints = createSelector(
 
 export const getProgress = createSelector(selectQuizState, state => 0);
 
-export const getTotalQuestions = createSelector(getQuizQuestions, quizQuestions => quizQuestions.length);
+export const getTotalQuestions = createSelector(getQuizQuestions, quizQuestions => quizQuestions.size);
 
 export const getCurrentQuestion = createSelector(
   getQuizQuestions,
   getCurrentQuestionNumber,
-  (quizQuestions, currentQuestionNumber): QuizQuestion => quizQuestions[currentQuestionNumber]
+  (quizQuestions, currentQuestionNumber): QuizQuestion | undefined => quizQuestions.get(currentQuestionNumber)
 );
 
-const getCurrentOptionIndex = createSelector(selectQuizState, (state): number | null => state.currentOptionIndex);
+const getCurrentOptionIndex = createSelector(
+  getCurrentQuestion,
+  (currentQuestion): number | undefined => currentQuestion?.answerIndex ?? undefined
+);
 
 export const getCurrentOption = createSelector(
   getCurrentQuestion,
   getCurrentOptionIndex,
-  (currentQuestion, currentOptionIndex): Option | null => (currentOptionIndex !== null ? currentQuestion.options[currentOptionIndex] : null)
+  (currentQuestion, currentOptionIndex): Option | null => {
+    console.log(currentQuestion, currentOptionIndex);
+    return !!currentQuestion && currentOptionIndex !== undefined ? currentQuestion.options[currentOptionIndex] : null;
+  }
 );
 
 export const getIsCurrentQuestionAnswered = createSelector(

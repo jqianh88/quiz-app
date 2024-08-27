@@ -1,16 +1,12 @@
-import { createAction, props } from '@ngrx/store';
-import { Option, QuizQuestion } from './quiz.models';
+import {createAction, props} from '@ngrx/store';
+
+import {Option, QuizQuestion} from './quiz.models';
+import {QuizState} from './quiz.reducer';
 
 export const initQuiz = createAction('[Quiz] initQuiz');
 
-export const setName = createAction(
-  '[Quiz] setName',
-  props<{ name: string }>()
-);
-export const nameSet = createAction(
-  '[Quiz] nameSet',
-  props<{ name: string }>()
-);
+export const setName = createAction('[Quiz] setName', props<{name: string}>());
+export const nameSet = createAction('[Quiz] nameSet', props<{name: string}>());
 
 // private loadQuestions() {
 //   this.questionApiService
@@ -23,10 +19,7 @@ export const nameSet = createAction(
 // }
 
 export const loadQuestions = createAction('[Quiz] loadQuestions');
-export const questionsLoaded = createAction(
-  '[Quiz] questionsLoaded',
-  props<{ quizQuestions: QuizQuestion[] }>()
-);
+export const questionsLoaded = createAction('[Quiz] questionsLoaded', props<{quizQuestions: QuizState['quizQuestions']}>());
 
 // public startQuiz(): void {
 //   this.loadQuestions();
@@ -40,14 +33,8 @@ export const questionsLoaded = createAction(
 export const startQuiz = createAction('[Quiz] startQuiz');
 export const quizStarted = createAction('[Quiz] quizStarted');
 
-export const setIsQuizActive = createAction(
-  '[Quiz] setIsQuizActive',
-  props<{ isQuizActive: boolean }>()
-);
-export const isQuizActiveSet = createAction(
-  '[Quiz] isQuizActiveSet',
-  props<{ isQuizActive: boolean }>()
-);
+export const setIsQuizActive = createAction('[Quiz] setIsQuizActive', props<{isQuizActive: boolean}>());
+export const isQuizActiveSet = createAction('[Quiz] isQuizActiveSet', props<{isQuizActive: boolean}>());
 
 // public resetQuiz(): void {
 //   console.log('are we working?');
@@ -64,9 +51,7 @@ export const quizReset = createAction('[Quiz] quizReset');
 //   }
 // }
 
-export const navigateToPreviousQuestion = createAction(
-  '[Quiz] navigateToPreviousQuestion'
-);
+export const navigateToPreviousQuestion = createAction('[Quiz] navigateToPreviousQuestion');
 
 // public nextQuestion(): void {
 //   const currentIndex = this.currentQuestionNumber$.getValue();
@@ -88,13 +73,11 @@ export const navigateToPreviousQuestion = createAction(
 //   }
 // }
 
-export const navigateToNextQuestion = createAction(
-  '[Quiz] navigateToNextQuestion'
-);
+export const navigateToNextQuestion = createAction('[Quiz] navigateToNextQuestion');
 
-export const selectedQuizQuestionIndexSet = createAction(
-  '[Quiz] selectedQuizQuestionIndexSet',
-  props<{ selectedQuizQuestionIndex: number | null }>()
+export const selectedQuizQuestionIdSet = createAction(
+  '[Quiz] selectedQuizQuestionIdSet',
+  props<{selectedQuizQuestionId: QuizState['selectedQuizQuestionId']}>()
 );
 
 // public answer(option: Option): void {
@@ -113,16 +96,10 @@ export const selectedQuizQuestionIndexSet = createAction(
 //   }
 // }
 
-export const answerCurrentQuestion = createAction(
-  '[Quiz] answerCurrentQuestion',
-  props<{ option: Option }>()
-);
+export const answerCurrentQuestion = createAction('[Quiz] answerCurrentQuestion', props<{option: Option}>());
 
 export const currentOptionIndexSet = createAction(
   '[Quiz] currentOptionIndexSet',
-  props<{ currentOptionIndex: number | null }>()
+  props<{quizQuestionId: QuizQuestion['id']; answerIndex?: number}>()
 );
-export const correctAnswerCountSet = createAction(
-  '[Quiz] correctAnswerCountSet',
-  props<{ correctAnswerCount: number }>()
-);
+export const correctAnswerCountSet = createAction('[Quiz] correctAnswerCountSet', props<{correctAnswerCount: number}>());
