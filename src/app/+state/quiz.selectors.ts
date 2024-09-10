@@ -15,7 +15,14 @@ export const getCurrentQuestionNumber = createSelector(selectQuizState, (state):
 
 const getPointsPerCorrectAnswer = createSelector(selectQuizState, state => state.pointsPerCorrectAnswer);
 
+export const getTotalQuestions = createSelector(getQuizQuestions, quizQuestions => quizQuestions.size);
+
 export const getCorrectAnswerCount = createSelector(selectQuizState, state => state.correctAnswerCount);
+export const getIncorrectAnswerCount = createSelector(
+  getCorrectAnswerCount,
+  getTotalQuestions,
+  (correctAnswerCount, totalQuestions) => totalQuestions - correctAnswerCount
+);
 
 export const getPoints = createSelector(
   getCorrectAnswerCount,
@@ -24,8 +31,6 @@ export const getPoints = createSelector(
 );
 
 export const getProgress = createSelector(selectQuizState, state => 0);
-
-export const getTotalQuestions = createSelector(getQuizQuestions, quizQuestions => quizQuestions.size);
 
 export const getCurrentQuestion = createSelector(
   getQuizQuestions,

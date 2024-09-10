@@ -7,9 +7,14 @@ import {filter, map, mergeMap, switchMap, tap, withLatestFrom} from 'rxjs';
 
 import {QuizApiService} from './quiz-api.service';
 import * as quizActions from './quiz.actions';
-import {answerCurrentQuestion, currentOptionIndexSet} from './quiz.actions';
 import {QuizQuestion} from './quiz.models';
-import {getCurrentQuestion, getCurrentQuestionNumber, getTotalQuestions} from './quiz.selectors';
+import {
+  getCorrectAnswerCount,
+  getCurrentQuestion,
+  getCurrentQuestionNumber,
+  getIsCurrentQuestionCorrect,
+  getTotalQuestions,
+} from './quiz.selectors';
 
 @Injectable()
 export class QuizEffects implements OnInitEffects {
@@ -63,14 +68,24 @@ export class QuizEffects implements OnInitEffects {
 
   private answerCurrentQuestion$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(answerCurrentQuestion),
+      ofType(quizActions.answerCurrentQuestion),
       withLatestFrom(this.store.pipe(select(getCurrentQuestion))),
       filter(([, currentQuestion]) => currentQuestion !== undefined && currentQuestion.answerIndex === undefined),
       map(([{option}, currentQuestion]) => ({
         quizQuestionId: currentQuestion!.id,
         answerIndex: currentQuestion!.options.findIndex(o => o.text === option.text),
       })),
-      map(({quizQuestionId, answerIndex}) => currentOptionIndexSet({quizQuestionId, answerIndex}))
+      map(({quizQuestionId, answerIndex}) => quizActions.currentOptionIndexSet({quizQuestionId, answerIndex}))
+    )
+  );
+
+  private currentOptionIndexSet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(quizActions.currentOptionIndexSet),
+      concatLatestFrom(() => [this.store.pipe(select(getIsCurrentQuestionCorrect)), this.store.pipe(select(getCorrectAnswerCount))]),
+      filter(([, isCurrentQuestionCorrect]) => isCurrentQuestionCorrect),
+      map(([, , correctAnswerCount]) => correctAnswerCount + 1),
+      map(correctAnswerCount => quizActions.correctAnswerCountSet({correctAnswerCount}))
     )
   );
 
@@ -78,7 +93,7 @@ export class QuizEffects implements OnInitEffects {
     this.actions$.pipe(
       ofType(quizActions.navigateToPreviousQuestion),
       concatLatestFrom(_ => [this.store.pipe(select(getCurrentQuestionNumber)), this.store.pipe(select(getTotalQuestions))]),
-      map(([, currentIndex, lengthOfQuestions]) => (lengthOfQuestions === 0 ? 1 : Math.max(currentIndex - 1, 0) + 1)),
+      map(([, currentQuestionNumber, lengthOfQuestions]) => (lengthOfQuestions === 0 ? 1 : Math.max(currentQuestionNumber - 1, 0) + 1)),
       map(selectedQuizQuestionId => quizActions.selectedQuizQuestionIdSet({selectedQuizQuestionId}))
     )
   );
@@ -87,8 +102,27 @@ export class QuizEffects implements OnInitEffects {
     this.actions$.pipe(
       ofType(quizActions.navigateToNextQuestion),
       concatLatestFrom(_ => [this.store.pipe(select(getCurrentQuestionNumber)), this.store.pipe(select(getTotalQuestions))]),
-      map(([, currentIndex, lengthOfQuestions]) => (lengthOfQuestions === 0 ? 1 : Math.min(lengthOfQuestions - 1, currentIndex + 1) + 1)),
-      map(selectedQuizQuestionId => quizActions.selectedQuizQuestionIdSet({selectedQuizQuestionId}))
+      map(([, currentQuestionNumber, lengthOfQuestions]) => ({
+        currentQuestionNumber,
+        lengthOfQuestions,
+        isQuizDone: currentQuestionNumber + 1 > lengthOfQuestions,
+      })),
+      map(({currentQuestionNumber, lengthOfQuestions, isQuizDone}) => ({
+        selectedQuizQuestionId: lengthOfQuestions === 0 ? 1 : Math.min(lengthOfQuestions - 1, currentQuestionNumber) + 1,
+        isQuizDone,
+      })),
+      map(({selectedQuizQuestionId, isQuizDone}) => {
+        return isQuizDone ? quizActions.showResults() : quizActions.selectedQuizQuestionIdSet({selectedQuizQuestionId});
+      })
     )
+  );
+
+  private showResults$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(quizActions.showResults),
+        tap(_ => this.router.navigate(['/quiz-results']))
+      ),
+    {dispatch: false}
   );
 }

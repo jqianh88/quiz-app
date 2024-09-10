@@ -1,35 +1,22 @@
-import {CommonModule} from '@angular/common';
-import {Component, Input} from '@angular/core';
-import {LetDirective, PushPipe} from '@ngrx/component';
+import {Component, inject} from '@angular/core';
+import {PushPipe} from '@ngrx/component';
+import {select, Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
 
-import {QuizQuestion} from '../../+state/quiz.models';
-import {ChangeBgDirective} from '../../change-bg.directive';
-import {WelcomeComponent} from '../../welcome/welcome.component';
-import {QuizQuestionsService} from '../quiz-questions-service/quiz-questions.service';
+import * as quizSelectors from '../../+state/quiz.selectors';
 
 @Component({
   selector: 'app-quiz-results',
   standalone: true,
-  imports: [
-    WelcomeComponent,
-    CommonModule,
-    ChangeBgDirective,
-    PushPipe,
-    LetDirective,
-  ],
+  imports: [PushPipe],
   templateUrl: './quiz-results.component.html',
   styleUrl: './quiz-results.component.scss',
 })
 export class QuizResultsComponent {
-  public name: string = '';
-  @Input() questionList: QuizQuestion[] = [];
+  private store: Store = inject(Store);
 
-  public currentQuestion: number = 0;
-  correctAnswer: number = 0;
-  inCorrectAnswer: number = 0;
-  interval$: any;
-  progress: string = '0';
-  isQuizCompleted: boolean = false;
-
-  constructor(protected readonly questionsService: QuizQuestionsService) {}
+  protected points$: Observable<number> = this.store.pipe(select(quizSelectors.getPoints));
+  protected totalQuestions$: Observable<number> = this.store.pipe(select(quizSelectors.getTotalQuestions));
+  protected correctAnswerCount$: Observable<number> = this.store.pipe(select(quizSelectors.getCorrectAnswerCount));
+  protected incorrectAnswerCount$: Observable<number> = this.store.pipe(select(quizSelectors.getIncorrectAnswerCount));
 }

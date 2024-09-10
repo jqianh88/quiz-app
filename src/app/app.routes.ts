@@ -10,7 +10,7 @@ export const routes: Routes = [
     path: 'quiz-questions',
     loadComponent: () => import('./quiz/quiz-questions/quiz-questions.component').then(m => m.QuizQuestionsComponent),
   },
-  // { path: 'quiz-results', component: QuizResultsComponent },
+  {path: 'quiz-results', loadComponent: () => import('./quiz/quiz-results/quiz-results.component').then(m => m.QuizResultsComponent)},
   {path: '', redirectTo: 'welcome', pathMatch: 'full'},
   {path: '**', redirectTo: 'welcome'},
 ];

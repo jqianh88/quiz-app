@@ -20,7 +20,7 @@ export const initialState: QuizState = {
   quizQuestions: new Map(),
   isQuizActive: false,
   correctAnswerCount: 0,
-  pointsPerCorrectAnswer: 3,
+  pointsPerCorrectAnswer: 5,
   isFinalMode: true,
 };
 

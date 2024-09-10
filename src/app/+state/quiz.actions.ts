@@ -103,3 +103,5 @@ export const currentOptionIndexSet = createAction(
   props<{quizQuestionId: QuizQuestion['id']; answerIndex?: number}>()
 );
 export const correctAnswerCountSet = createAction('[Quiz] correctAnswerCountSet', props<{correctAnswerCount: number}>());
+
+export const showResults = createAction('[Quiz] showResults');
