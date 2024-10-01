@@ -1,0 +1,17 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  align-items: center;
+
+  gap: 0.25rem;
+
+  padding: 0.25rem;
+
+  background-color: pink;
+
+  @include bp.media-breakpoint-down(md) {
+    justify-content: center;
+    min-height: 5rem;
+  }
+}
