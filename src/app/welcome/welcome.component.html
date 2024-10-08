@@ -1,21 +1,17 @@
-<div class="container bg-light py-5">
-  <h1 class="display-5 fw-bold">Welcome to Your Daily Quiz</h1>
-  <p class="col-md-8 fs-4">
-    This quiz will contain have 5 questions. Each question is worth 5 points.
-  </p>
+<h1 class="header">Welcome to Your Daily Quiz</h1>
+<div class="info">
+  <p>This quiz will contain have 5 questions. Each question is worth 5 points.</p>
   <h4>Things to Note:</h4>
   <ol>
     <li>You will have 60 seconds to answer each question.</li>
     <li>Refreshing the page will reset the quiz.</li>
   </ol>
-  <h2 style="font-family: Helvetica; text-align: left">
-    May Angular be ever in your favor!!
-  </h2>
-  <div class="name col-md-4 my-3">
+  <h2>May Angular be ever in your favor!!</h2>
+</div>
+<div class="login">
+  <div>
     <label for="">Enter your name:</label>
-    <input #name [value]="name$ | ngrxPush" type="text" class="form-control" />
+    <input #name [value]="name$ | ngrxPush" type="text" />
   </div>
-  <button class="btn btn-primary btn-lg" (click)="startQuiz(name.value)">
-    Start the Quiz!!
-  </button>
+  <button (click)="startQuiz(name.value)">Start the Quiz!!</button>
 </div>
