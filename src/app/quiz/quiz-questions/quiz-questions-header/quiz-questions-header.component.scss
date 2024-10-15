@@ -1,19 +1,23 @@
-.card {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 10px;
-}
+:host {
+  display: grid;
+  grid-template-areas:
+    'points question timer'
+    'progress progress progress';
 
-li {
-  list-style-type: none;
-  cursor: pointer;
-  margin: 10px 0;
-}
+  row-gap: 1rem;
+  padding: 1rem;
 
-li .card:hover {
-  border: 1px solid blue;
-}
+  .score {
+    grid-area: points;
+  }
 
-ol {
-  padding: 0;
+  .question {
+    grid-area: question;
+
+    font-style: italic;
+  }
+
+  .timer {
+    grid-area: timer;
+  }
 }
