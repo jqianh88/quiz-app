@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: grid;
   grid-template-areas:
@@ -7,6 +9,15 @@
   row-gap: 1rem;
   padding: 1rem;
 
+  @include bp.media-breakpoint-down(md) {
+    grid-template-areas:
+      'progress progress'
+      'points timer';
+
+    justify-items: center;
+    padding: 0;
+  }
+
   .score {
     grid-area: points;
   }
@@ -15,9 +26,19 @@
     grid-area: question;
 
     font-style: italic;
+
+    @include bp.media-breakpoint-down(md) {
+      display: none;
+    }
   }
 
   .timer {
     grid-area: timer;
+  }
+
+  .progress-bar {
+    grid-area: progress;
+    justify-self: flex-start;
+    height: 1rem;
   }
 }

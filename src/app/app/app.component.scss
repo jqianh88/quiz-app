@@ -1,0 +1,14 @@
+@use 'breakpoints' as bp;
+
+:host {
+  .center-me {
+    display: flex;
+    justify-content: center;
+
+    padding-top: 3rem;
+
+    @include bp.media-breakpoint-down(md) {
+      padding-top: 0;
+    }
+  }
+}

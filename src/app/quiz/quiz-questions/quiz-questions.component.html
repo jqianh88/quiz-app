@@ -1,37 +1,33 @@
-<div class="container mt-5">
-  <div class="card">
-    <div class="d-flex justify-content-between p-3">
-      <div class="image">
-        <img src="https://img.icons8.com/color/96/000000/angularjs.png" width="90" alt="logo" />
-      </div>
-      <div class="quiz-header">
-        <h4 style="font-family: cursive">Angular & TypeScript Quiz!</h4>
-        <span style="font-style: italic">Welcome {{ name$ | ngrxPush }}</span>
-      </div>
-    </div>
-    @if (isQuizActive$ | ngrxPush) {
-    <app-quiz-questions-header
-      [counter]="0"
-      [currentQuestionNumber]="(currentQuestionNumber$ | ngrxPush) || 1"
-      [points]="(points$ | ngrxPush) || 0"
-      [progress]="(progress$ | ngrxPush) || 0"
-      [totalQuestions]="(totalQuestions$ | ngrxPush) || 0"
-    />
-    @let currentQuestion = currentQuestion$ | ngrxPush; @if (currentQuestion) {
-    <app-quiz-question
-      [quizQuestion]="currentQuestion"
-      [isAnswered]="(isCurrentQuestionAnswered$ | ngrxPush) || false"
-      [isCorrect]="isCurrentQuestionCorrect$ | ngrxPush"
-      [answer]="(currentOption$ | ngrxPush) || null"
-      (optionSelect)="onOptionSelect($event)"
-    />
-    }
-    <app-quiz-questions-navigation
-      [shouldAllowPreviousQuestion]="!(getShouldAllowPreviousQuestion$ | ngrxPush) || false"
-      (previousQuestion)="onPreviousQuestion()"
-      (resetQuiz)="onResetQuiz()"
-      (nextQuestion)="onNextQuestion()"
-    />
-    }
+<div class="welcome-header">
+  <div class="image">
+    <img src="https://img.icons8.com/color/96/000000/angularjs.png" width="90" alt="logo" />
+  </div>
+  <div class="quiz-header">
+    <h4 style="font-family: cursive">Angular & TypeScript Quiz!</h4>
+    <span style="font-style: italic">Welcome {{ name$ | ngrxPush }}</span>
   </div>
 </div>
+@if (isQuizActive$ | ngrxPush) {
+<app-quiz-questions-header
+  [counter]="0"
+  [currentQuestionNumber]="(currentQuestionNumber$ | ngrxPush) || 1"
+  [points]="(points$ | ngrxPush) || 0"
+  [progress]="(progress$ | ngrxPush) || 0"
+  [totalQuestions]="(totalQuestions$ | ngrxPush) || 0"
+/>
+@let currentQuestion = currentQuestion$ | ngrxPush; @if (currentQuestion) {
+<app-quiz-question
+  [quizQuestion]="currentQuestion"
+  [isAnswered]="(isCurrentQuestionAnswered$ | ngrxPush) || false"
+  [isCorrect]="isCurrentQuestionCorrect$ | ngrxPush"
+  [answer]="(currentOption$ | ngrxPush) || null"
+  (optionSelect)="onOptionSelect($event)"
+/>
+}
+<app-quiz-questions-navigation
+  [shouldAllowPreviousQuestion]="!(getShouldAllowPreviousQuestion$ | ngrxPush) || false"
+  (previousQuestion)="onPreviousQuestion()"
+  (resetQuiz)="onResetQuiz()"
+  (nextQuestion)="onNextQuestion()"
+/>
+}

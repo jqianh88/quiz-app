@@ -1,19 +1,47 @@
-.card {
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
   max-width: 800px;
-  margin: 0 auto;
+  width: 100%;
+
   padding: 10px;
-}
 
-li {
-  list-style-type: none;
-  cursor: pointer;
-  margin: 10px 0;
-}
+  word-wrap: break-word;
 
-li .card:hover {
-  border: 1px solid blue;
-}
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
 
-ol {
-  padding: 0;
+  @include bp.media-breakpoint-down(md) {
+    padding-block: 0;
+  }
+
+  .welcome-header {
+    display: flex;
+    padding: 1rem;
+    justify-content: space-between;
+
+    @include bp.media-breakpoint-down(md) {
+      display: none;
+    }
+  }
+
+  li {
+    list-style-type: none;
+    cursor: pointer;
+    margin: 10px 0;
+  }
+
+  li .card:hover {
+    border: 1px solid blue;
+  }
+
+  ol {
+    padding: 0;
+  }
 }
