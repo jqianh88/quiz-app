@@ -16,9 +16,9 @@ export interface QuizState {
 }
 
 export const initialState: QuizState = {
-  name: null,
+  name: 'hi there',
   quizQuestions: new Map(),
-  isQuizActive: false,
+  isQuizActive: true,
   correctAnswerCount: 0,
   pointsPerCorrectAnswer: 5,
   isFinalMode: true,

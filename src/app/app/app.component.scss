@@ -1,11 +1,22 @@
 @use 'breakpoints' as bp;
 
 :host {
+  @include bp.media-breakpoint-down(md) {
+    display: grid;
+    grid-template-rows: min-content auto;
+
+    height: 100dvh;
+  }
+
   .center-me {
     display: flex;
     justify-content: center;
 
     padding-top: 3rem;
+
+    router-outlet + * {
+      background-color: purple;
+    }
 
     @include bp.media-breakpoint-down(md) {
       padding-top: 0;
