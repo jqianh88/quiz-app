@@ -5,6 +5,7 @@
 </div>
 <div class="options">
   <div
+    class="option"
     *ngFor="let option of quizQuestion.options"
     [ngClass]="{
       answered: isAnswered && option.text === answer?.text,

@@ -1,5 +1,44 @@
+@use 'breakpoints' as bp;
+
 :host {
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+
   .options {
+    --cols: 1;
+    --gap: 1rem;
+
+    @include bp.media-breakpoint-down(md) {
+      --cols: 2;
+    }
+
+    flex-grow: 1;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: var(--gap);
+
+    padding-block: 1rem;
+
+    .option {
+      flex-grow: 1;
+      flex-basis: 50%;
+      flex-basis: calc(100% / var(--cols) - var(--gap) / var(--cols) * (var(--cols) - 1));
+
+      background-color: deepskyblue;
+
+      border: 1px solid darkgray;
+      border-radius: 0.45rem;
+
+      @include bp.media-breakpoint-down(md) {
+        align-content: center;
+        text-align: center;
+      }
+    }
+
     .answered {
       background: red;
       color: #fff;

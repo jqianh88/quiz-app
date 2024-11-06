@@ -1,9 +1,9 @@
-import { CommonModule, NgClass } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { LetDirective, PushPipe } from '@ngrx/component';
+import {CommonModule, NgClass} from '@angular/common';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {LetDirective, PushPipe} from '@ngrx/component';
 
-import { Option, QuizQuestion } from '../../+state/quiz.models';
-import { ChangeBgDirective } from '../../change-bg.directive';
+import {Option, QuizQuestion} from '../../+state/quiz.models';
+import {ChangeBgDirective} from '../../change-bg.directive';
 
 @Component({
   selector: 'app-quiz-question',
