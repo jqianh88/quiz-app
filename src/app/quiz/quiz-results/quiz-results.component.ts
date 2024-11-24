@@ -1,37 +1,22 @@
-import { Component, Input, NgModule, OnInit } from '@angular/core';
-import { interval } from 'rxjs';
-import { QuizQuestionsService } from '../quiz-questions-service/quiz-questions.service';
-import { WelcomeComponent } from '../../welcome/welcome.component';
-import { ChangeBgDirective } from '../../change-bg.directive';
-import { CommonModule } from '@angular/common';
-import { QuizQuestion } from '../quiz-questions-service/quiz-questions.models';
-import { LetDirective, PushPipe } from '@ngrx/component';
+import {Component, inject} from '@angular/core';
+import {PushPipe} from '@ngrx/component';
+import {select, Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+
+import * as quizSelectors from '../../+state/quiz.selectors';
 
 @Component({
   selector: 'app-quiz-results',
   standalone: true,
-  imports: [
-    WelcomeComponent,
-    CommonModule,
-    ChangeBgDirective,
-    PushPipe,
-    LetDirective,
-  ],
+  imports: [PushPipe],
   templateUrl: './quiz-results.component.html',
   styleUrl: './quiz-results.component.scss',
 })
-export class QuizResultsComponent implements OnInit {
-  public name: string = '';
-  @Input() questionList: QuizQuestion[] = [];
+export class QuizResultsComponent {
+  private store: Store = inject(Store);
 
-  public currentQuestion: number = 0;
-  correctAnswer: number = 0;
-  inCorrectAnswer: number = 0;
-  interval$: any;
-  progress: string = '0';
-  isQuizCompleted: boolean = false;
-
-  constructor(protected readonly questionsService: QuizQuestionsService) {}
-
-  ngOnInit(): void {}
+  protected points$: Observable<number> = this.store.pipe(select(quizSelectors.getPoints));
+  protected totalQuestions$: Observable<number> = this.store.pipe(select(quizSelectors.getTotalQuestions));
+  protected correctAnswerCount$: Observable<number> = this.store.pipe(select(quizSelectors.getCorrectAnswerCount));
+  protected incorrectAnswerCount$: Observable<number> = this.store.pipe(select(quizSelectors.getIncorrectAnswerCount));
 }

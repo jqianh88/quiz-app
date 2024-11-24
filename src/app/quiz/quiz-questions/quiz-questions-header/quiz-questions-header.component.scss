@@ -1,19 +1,44 @@
-.card {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 10px;
-}
+@use 'breakpoints' as bp;
 
-li {
-  list-style-type: none;
-  cursor: pointer;
-  margin: 10px 0;
-}
+:host {
+  display: grid;
+  grid-template-areas:
+    'points question timer'
+    'progress progress progress';
 
-li .card:hover {
-  border: 1px solid blue;
-}
+  row-gap: 1rem;
+  padding: 1rem;
 
-ol {
-  padding: 0;
+  @include bp.media-breakpoint-down(md) {
+    grid-template-areas:
+      'progress progress'
+      'points timer';
+
+    justify-items: center;
+    padding: 0;
+  }
+
+  .score {
+    grid-area: points;
+  }
+
+  .question {
+    grid-area: question;
+
+    font-style: italic;
+
+    @include bp.media-breakpoint-down(md) {
+      display: none;
+    }
+  }
+
+  .timer {
+    grid-area: timer;
+  }
+
+  .progress-bar {
+    grid-area: progress;
+    justify-self: flex-start;
+    height: 1rem;
+  }
 }

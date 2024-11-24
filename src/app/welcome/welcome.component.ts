@@ -1,22 +1,23 @@
-import { NgClass } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { QuizQuestionsComponent } from '../quiz/quiz-questions/quiz-questions.component';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import {Component, inject} from '@angular/core';
+import {RouterLink, RouterOutlet} from '@angular/router';
+import {PushPipe} from '@ngrx/component';
+import {select, Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+
+import * as quizActions from '../+state/quiz.actions';
+import * as quizSelectors from '../+state/quiz.selectors';
 
 @Component({
   selector: 'app-welcome',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, QuizQuestionsComponent],
+  imports: [RouterLink, RouterOutlet, PushPipe],
   templateUrl: './welcome.component.html',
-  styleUrl: './welcome.component.scss'
+  styleUrl: './welcome.component.scss',
 })
 export class WelcomeComponent {
-  @ViewChild('name') nameKey!: ElementRef;
-  constructor() { }
+  private store: Store = inject(Store);
 
-  ngOnInit(): void {
-  }
-  startQuiz(){
-    localStorage.setItem("name",this.nameKey.nativeElement.value);
-  }
+  protected name$: Observable<string> = this.store.pipe(select(quizSelectors.getName));
+
+  protected startQuiz = (name: string) => this.store.dispatch(quizActions.setName({name}));
 }

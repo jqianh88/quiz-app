@@ -1,0 +1,39 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: grid;
+  grid-template-areas:
+    '. header header .'
+    '. info login .';
+  grid-template-columns: 3rem 1fr 1fr 3rem;
+  gap: 1rem 3rem;
+
+  justify-items: center;
+
+  @include bp.media-breakpoint-down(md) {
+    grid-template-areas:
+      'header'
+      'login'
+      'info';
+    grid-template-columns: auto;
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+  .header {
+    grid-area: header;
+  }
+
+  .info {
+    grid-area: info;
+  }
+
+  .login {
+    grid-area: login;
+    align-self: center;
+
+    @include bp.media-breakpoint-down(md) {
+      align-self: flex-end;
+      justify-self: flex-end;
+    }
+  }
+}

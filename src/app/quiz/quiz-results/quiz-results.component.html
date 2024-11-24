@@ -1,23 +1,13 @@
-<div
-  *ngrxLet="questionsService.points$ as points"
-  class="row d-flex justify-content-between"
->
-  <span class="huge-emoji">{{ points > 5 ? "🥳" : "💩" }}</span>
+@let points = (points$ | ngrxPush) || 0;
+
+<div class="row d-flex justify-content-between">
+  <span class="huge-emoji">{{ points > 5 ? '🥳' : '💩' }}</span>
 
   <div class="result text-center col-md-6 col-sm-12">
     <h3>Congratulations!! <br />You have completed the quiz.</h3>
-    <p>
-      Total Question Attempted :
-      {{ questionsService.questionsAttempted$ | ngrxPush }}
-    </p>
-    <p>
-      Total Correct Answered :
-      {{ questionsService.questionsCorrectlyAnswered$ | ngrxPush }}
-    </p>
-    <p>
-      Total Wrong Answered :
-      {{ questionsService.questionsIncorrectlyAnswered$ | ngrxPush }}
-    </p>
-    <p>Your Score : {{ points }} Points</p>
+    <p>Total Question Attempted: {{ totalQuestions$ | ngrxPush }}</p>
+    <p>Total Correct Answered: {{ correctAnswerCount$ | ngrxPush }}</p>
+    <p>Total Wrong Answered: {{ incorrectAnswerCount$ | ngrxPush }}</p>
+    <p>Your Score: {{ points }} Points</p>
   </div>
 </div>
